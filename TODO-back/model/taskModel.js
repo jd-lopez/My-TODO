@@ -3,12 +3,16 @@ const mongoose = require("mongoose");
 const taskSchema = new mongoose.Schema({
   text: {
     type: String,
-    require: true,
+    required: true,
     trim: true,
+  },
+  status: {
+    type: String,
+    enum: ["todo", "doing", "done"],
+    default: "todo",
   },
   completed: {
     type: Boolean,
-    require: true,
     default: false,
   },
   order: {

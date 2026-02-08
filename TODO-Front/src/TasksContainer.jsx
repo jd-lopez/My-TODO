@@ -14,7 +14,7 @@ function TasksContainer({ tasks, onDelete, onComplete }) {
 
   return (
     <div
-      className={`m-2  rounded-md flex flex-col w-1/4 p-2 gap-2 shadow overflow-auto ${isDark ? "bg-black/50 backdrop-blur-2xl" : "bg-white"}`}
+      className={`  rounded-md flex flex-col gap-2 shadow overflow-auto text-lg text-white`}
     >
       {isEmpty ? (
         <div className="h-fit">Nothing Here</div>
@@ -23,7 +23,7 @@ function TasksContainer({ tasks, onDelete, onComplete }) {
           return (
             <div
               key={task._id}
-              className="flex items-center justify-between px-4 py-1  rounded-xl "
+              className="flex items-center justify-between px-2 py-1 rounded-xl  bg-gray-600"
             >
               <div
                 className={` rounded-full border-2  transition-all delay-75 size-4 grid place-content-center hover:scale-120 active:scale-200 ${isDark ? "border-white" : "border-purple-600"}

@@ -5,7 +5,7 @@ import InputTask from "./ImputTask";
 import TasksContainer from "./TasksContainer";
 import TaskFilters from "./TaskFilters";
 import { useTheme } from "./ThemeContext";
-import Top from "./Top";
+import KanbanBoard from "./KanbanBoard";
 
 export default function Dashboard() {
   const FILTER_KEY = "todo_filter";
@@ -62,6 +62,10 @@ export default function Dashboard() {
     return true; //all
   });
 
+  const todoTasks = visibleTasks.filter((t) => (t.status ?? "todo") === "todo");
+  const doingTasks = visibleTasks.filter((t) => t.status === "doing");
+  const doneTasks = visibleTasks.filter((t) => t.status === "done");
+
   return (
     <div
       className={`h-screen transition-all delay-75 text-sm
@@ -69,8 +73,10 @@ export default function Dashboard() {
         ${isDark ? "bg-slate-900 bgImgMobNight md:bgImgDeskNight bg-bottom " : "bgImgMobDay md:bgImgDeskDay bg-bottom"}`}
     >
       <InputTask createTask={createTask} />
-      <TasksContainer
-        tasks={visibleTasks}
+      <KanbanBoard
+        todoTasks={todoTasks}
+        doingTasks={doingTasks}
+        doneTasks={doneTasks}
         onDelete={deleteTask}
         onComplete={markComplete}
       />
