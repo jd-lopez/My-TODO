@@ -1,0 +1,17 @@
+@import "tailwindcss";
+@custom-variant dark (&:where(.dark, .dark *));
+
+@utility bgImgMobDay {
+  background-image: url("/images/landscape_day.jpg");
+}
+
+@utility bgImgMobNight {
+  background-image: url("/images/cosmos_forest_night.jpg");
+}
+
+@utility bgImgDeskDay {
+  background-image: url("/images/lake_desktop_day.jpg");
+}
+@utility bgImgDeskNight {
+  background-image: url("/images/cosmos_night.jpg");
+}

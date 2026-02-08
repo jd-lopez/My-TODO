@@ -1,0 +1,4 @@
+node_modules
+TODO-back/node_modules
+TODO-Front/node_modules
+.env
