@@ -13,17 +13,19 @@ function TasksContainer({ tasks, onDelete, onComplete, onMove }) {
   let isEmpty = tasks.length === 0;
 
   return (
-    <div
-      className={`  rounded-md flex flex-col gap-2 shadow overflow-auto text-lg text-white`}
-    >
+    <div className={`  rounded-md flex flex-col gap-2 overflow-auto text-lg`}>
       {isEmpty ? (
-        <div className="h-fit bg-gray-600">Nothing Here</div>
+        <div
+          className={`${isDark ? "text-white bg-slate-700" : "text-black bg-gray-100"} p-2`}
+        >
+          Nothing Here
+        </div>
       ) : (
         tasks.map((task) => {
           return (
             <div
               key={task._id}
-              className="flex items-center px-2 py-1 rounded-xl group peer bg-gray-600"
+              className={`group flex items-center gap-2 shadow p-2 rounded-md transition-all delay-75 ${isDark ? "bg-slate-700" : "bg-gray-100 text-black"}`}
             >
               <div
                 className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200 ${isDark ? "border-white" : "border-purple-600"}

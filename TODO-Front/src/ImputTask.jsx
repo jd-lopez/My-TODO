@@ -13,7 +13,7 @@ function ImputTask({ createTask }) {
   }
 
   return (
-    <div className="flex justify-between transition-all delay-75 bg-white/10 backdrop-blur-2xl">
+    <div className="flex text-lg text-white px-3 items-center justify-between transition-all delay-75 bg-white/10 backdrop-blur-2xl">
       <div>
         <h1>MarketPlace</h1>
       </div>
@@ -28,7 +28,7 @@ function ImputTask({ createTask }) {
             className={`outline-0 px-2 py-0.5 border w-full flex-1 rounded-bl-md rounded-tl-md focus:ring-1 ${isDark ? "bg-gray-700 text-white border-white" : "bg-white border-black text-black"}`}
           />
         </label>
-        <button className="bg-violet-400 text-white p-1 rounded-tr-md rounded-br-md hover:bg-violet-600 active:bg-violet-600">
+        <button className="bg-violet-400  p-1 rounded-tr-md rounded-br-md hover:bg-violet-600 active:bg-violet-600">
           Submit
         </button>
       </form>
