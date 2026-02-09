@@ -62,9 +62,10 @@ export default function Dashboard() {
     return true; //all
   });
 
-  const todoTasks = visibleTasks.filter((t) => (t.status ?? "todo") === "todo");
-  const doingTasks = visibleTasks.filter((t) => t.status === "doing");
-  const doneTasks = visibleTasks.filter((t) => t.status === "done");
+  async function moveTask(id, status) {
+    setTasks((prev) => prev.map((t) => (t._id === id ? { ...t, status } : t)));
+    await api.patch(`/tasks/${id}`, { status });
+  }
 
   return (
     <div
@@ -74,11 +75,10 @@ export default function Dashboard() {
     >
       <InputTask createTask={createTask} />
       <KanbanBoard
-        todoTasks={todoTasks}
-        doingTasks={doingTasks}
-        doneTasks={doneTasks}
+        tasks={tasks}
         onDelete={deleteTask}
         onComplete={markComplete}
+        onMove={moveTask}
       />
     </div>
   );
