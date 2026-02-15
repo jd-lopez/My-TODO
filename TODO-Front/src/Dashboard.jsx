@@ -4,8 +4,9 @@ import api from "./api/api";
 import InputTask from "./ImputTask";
 import TasksContainer from "./TasksContainer";
 import TaskFilters from "./TaskFilters";
-import { useTheme } from "./ThemeContext";
+import { useTheme } from "./context/ThemeContext";
 import KanbanBoard from "./KanbanBoard";
+import Login from "./pages/login/Login";
 
 export default function Dashboard() {
   const FILTER_KEY = "todo_filter";
@@ -21,14 +22,6 @@ export default function Dashboard() {
       setTasks(res.data);
     });
   }, []);
-
-  async function createTask(text) {
-    const res = await api.post("/tasks", { text });
-
-    const newTask = res.data;
-
-    setTasks((prev) => [...prev, newTask]);
-  }
 
   async function deleteTask(id) {
     await api.delete(`/tasks/${id}`);
@@ -69,11 +62,12 @@ export default function Dashboard() {
 
   return (
     <div
-      className={`h-screen transition-all delay-75 text-sm
-      md:text-2xl bg-no-repeat bg-cover  flex flex-col 
+      className={`min-h-full transition-all delay-75 text-sm
+      md:text-2xl bg-no-repeat bg-cover  relative flex flex-col 
         ${isDark ? "bg-slate-900 bgImgMobNight md:bgImgDeskNight bg-bottom " : "bgImgMobDay md:bgImgDeskDay bg-bottom"}`}
     >
-      <InputTask createTask={createTask} />
+      <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-gray-400 to-gray-300 opacity-30"></div>
+      <InputTask />
       <KanbanBoard
         tasks={tasks}
         onDelete={deleteTask}

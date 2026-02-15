@@ -4,7 +4,7 @@ import crossIconDark from "./assets/icon_cross_dark.svg";
 import edit from "./assets/pencil.svg";
 import editDark from "./assets/pencil_dark.svg";
 import checkIcon from "./assets/icon-check.svg";
-import { useTheme } from "./ThemeContext";
+import { useTheme } from "./context/ThemeContext";
 import InputTask from "./ImputTask";
 
 function TasksContainer({ tasks, onDelete, onComplete, onMove }) {
@@ -13,10 +13,12 @@ function TasksContainer({ tasks, onDelete, onComplete, onMove }) {
   let isEmpty = tasks.length === 0;
 
   return (
-    <div className={`  rounded-md flex flex-col gap-2 overflow-auto text-lg`}>
+    <div
+      className={`  rounded-md flex flex-col gap-2 overflow-auto text-sm p-3`}
+    >
       {isEmpty ? (
         <div
-          className={`${isDark ? "text-white bg-slate-700" : "text-black bg-gray-100"} p-2`}
+          className={`${isDark ? "text-white bg-slate-700" : "text-black bg-gray-200"} p-2 rounded-md`}
         >
           Nothing Here
         </div>
@@ -25,7 +27,7 @@ function TasksContainer({ tasks, onDelete, onComplete, onMove }) {
           return (
             <div
               key={task._id}
-              className={`group flex items-center gap-2 shadow p-2 rounded-md transition-all delay-75 ${isDark ? "bg-slate-700" : "bg-gray-100 text-black"}`}
+              className={`group flex items-center gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-105 ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
             >
               <div
                 className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200 ${isDark ? "border-white" : "border-purple-600"}

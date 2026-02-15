@@ -1,6 +1,6 @@
 import React from "react";
 import TasksContainer from "./TasksContainer";
-import { useTheme } from "./ThemeContext";
+import { useTheme } from "./context/ThemeContext";
 
 function TasksColumn({ title, tasks, onDelete, onComplete, onMove }) {
   const { isDark } = useTheme();

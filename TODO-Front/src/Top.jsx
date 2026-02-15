@@ -1,24 +1,28 @@
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "./ThemeContext";
+import { useTheme } from "./context/ThemeContext";
 import { faMoon } from "@fortawesome/free-solid-svg-icons";
 import { faSun } from "@fortawesome/free-solid-svg-icons";
 import { faSignIn } from "@fortawesome/free-solid-svg-icons";
 import { faSign } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
+import Login from "./pages/login/Login";
 
 function Top() {
   const { isDark, toggleTheme } = useTheme();
 
   return (
     <header
-      className={`flex justify-between items-center p-4 transition-all duration-300  border-b border-gray-300 ${isDark ? "bg-slate-900 text-white" : "bg-teal-800 text-white"}`}
+      className={`flex justify-between items-center p-4 transition-all duration-300  border-b border-gray-300 ${isDark ? "bg-slate-900 text-white" : "bg-white text-black"}`}
     >
-      <h1 className="font-bold">TODO</h1>
+      <NavLink className="font-bold" to="/">
+        TODO
+      </NavLink>
       <div className=" flex items-center  gap-3 text-lg">
-        <button className="flex items-center gap-1 ">
+        <NavLink to="/login" className="flex items-center gap-1 cursor-pointer">
           <FontAwesomeIcon icon={faSignIn} />
           <span>Log in</span>
-        </button>
-        <button className="flex items-center gap-1">
+        </NavLink>
+        <button className="flex items-center gap-1 cursor-pointer">
           <FontAwesomeIcon icon={faSign} />
           <span>Sign Up</span>
         </button>

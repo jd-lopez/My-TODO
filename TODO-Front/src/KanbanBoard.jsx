@@ -7,7 +7,7 @@ function KanbanBoard({ tasks, onDelete, onComplete, onMove }) {
   const doneTasks = tasks.filter((t) => t.status === "done");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 min-h-0 m-2 items-start">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 min-h-0 m-2 items-start z-10">
       <TasksColumn
         title={"To Do"}
         tasks={todoTasks}
