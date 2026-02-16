@@ -1,9 +1,11 @@
 import React from "react";
 import TasksContainer from "./TasksContainer";
 import { useTheme } from "./context/ThemeContext";
+import NewTask from "./NewTask";
 
-function TasksColumn({ title, tasks, onDelete, onComplete, onMove }) {
+function TasksColumn({ title, tasks, onDelete, onComplete, onMove, onCreate }) {
   const { isDark } = useTheme();
+
   return (
     <div
       className={`${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} flex flex-col p-2 min-h-0 rounded-md`}
@@ -14,8 +16,9 @@ function TasksColumn({ title, tasks, onDelete, onComplete, onMove }) {
           tasks={tasks}
           onDelete={onDelete}
           onComplete={onComplete}
-          onMove={(id) => onMove(id, "doing")}
+          onMove={onMove ? (id) => onMove(id, "doing") : undefined}
         />
+        {onCreate && <NewTask onCreate={onCreate} />}
       </>
     </div>
   );

@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHome } from "@fortawesome/free-solid-svg-icons";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { faDashboard } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 function Sidebar({ isOpen, toggleSidebar }) {
   const { isDark } = useTheme();
@@ -14,13 +15,14 @@ function Sidebar({ isOpen, toggleSidebar }) {
       <ul className="flex flex-col gap-8 text-lg">
         {isOpen ? (
           <>
-            <li
+            <NavLink
+              to="/"
               className="flex items-center gap-2 justify-between cursor-pointer"
               label="Home"
             >
               <span className="whitespace-nowrap">Home</span>
               <FontAwesomeIcon icon={faHome} />
-            </li>
+            </NavLink>
             <li
               className="flex items-center gap-2 justify-between cursor-pointer"
               label="Dashboard"

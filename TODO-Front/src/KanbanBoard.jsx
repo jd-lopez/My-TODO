@@ -1,7 +1,7 @@
 import React from "react";
 import TasksColumn from "./TasksColumn";
 
-function KanbanBoard({ tasks, onDelete, onComplete, onMove }) {
+function KanbanBoard({ tasks, onDelete, onComplete, onMove, onCreate }) {
   const todoTasks = tasks.filter((t) => (t.status ?? "todo") === "todo");
   const doingTasks = tasks.filter((t) => t.status === "doing");
   const doneTasks = tasks.filter((t) => t.status === "done");
@@ -14,6 +14,7 @@ function KanbanBoard({ tasks, onDelete, onComplete, onMove }) {
         onDelete={onDelete}
         onComplete={onComplete}
         onMove={onMove}
+        onCreate={onCreate}
       />
       <TasksColumn
         title={"Doing"}

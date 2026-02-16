@@ -23,6 +23,16 @@ export default function Dashboard() {
     });
   }, []);
 
+  async function createTask(text) {
+    try {
+      const res = await api.post("/tasks", { text, status: "todo" });
+      const newTask = res.data;
+      setTasks((prev) => [...prev, newTask]);
+    } catch (err) {
+      console.error(err);
+    }
+  }
+
   async function deleteTask(id) {
     await api.delete(`/tasks/${id}`);
     setTasks((prev) => prev.filter((t) => t._id !== id));
@@ -73,6 +83,7 @@ export default function Dashboard() {
         onDelete={deleteTask}
         onComplete={markComplete}
         onMove={moveTask}
+        onCreate={createTask}
       />
     </div>
   );

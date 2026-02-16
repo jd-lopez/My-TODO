@@ -1,10 +1,8 @@
 import { Outlet } from "react-router-dom";
 import Top from "./Top";
-import Dashboard from "./Dashboard";
 import { useTheme } from "./context/ThemeContext";
 import Sidebar from "./Sidebar";
 import { useState } from "react";
-import InputTask from "./ImputTask";
 
 export default function Layout() {
   const { isDark } = useTheme();
