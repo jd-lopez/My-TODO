@@ -1,4 +1,3 @@
-import React from "react";
 import TasksColumn from "./TasksColumn";
 
 function KanbanBoard({ tasks, onDelete, onComplete, onMove, onCreate }) {
@@ -7,7 +6,7 @@ function KanbanBoard({ tasks, onDelete, onComplete, onMove, onCreate }) {
   const doneTasks = tasks.filter((t) => t.status === "done");
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-2 min-h-0 m-2 items-start z-10">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-3 min-h-0 m-2 md:m-3 items-start z-10">
       <TasksColumn
         title={"To Do"}
         tasks={todoTasks}

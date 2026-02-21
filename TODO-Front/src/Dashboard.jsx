@@ -2,19 +2,11 @@ import { useState, useEffect } from "react";
 import "./App.css";
 import api from "./api/api";
 import InputTask from "./ImputTask";
-import TasksContainer from "./TasksContainer";
-import TaskFilters from "./TaskFilters";
 import { useTheme } from "./context/ThemeContext";
 import KanbanBoard from "./KanbanBoard";
-import Login from "./pages/login/Login";
 
 export default function Dashboard() {
-  const FILTER_KEY = "todo_filter";
-
   const [tasks, setTasks] = useState([]);
-  const [filter, setFilter] = useState(() => {
-    return localStorage.getItem(FILTER_KEY) || "all";
-  });
   const { isDark } = useTheme();
 
   useEffect(() => {
@@ -51,19 +43,6 @@ export default function Dashboard() {
       console.error(err);
     }
   }
-
-  //filter logic
-
-  useEffect(() => {
-    localStorage.setItem(FILTER_KEY, filter);
-  }, [filter]);
-
-  const visibleTasks = tasks.filter((t) => {
-    if (filter === "active") return !t.completed;
-    if (filter === "completed") return t.completed;
-
-    return true; //all
-  });
 
   async function moveTask(id, status) {
     setTasks((prev) => prev.map((t) => (t._id === id ? { ...t, status } : t)));
