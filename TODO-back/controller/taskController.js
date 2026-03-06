@@ -1,47 +1,116 @@
 const taskModel = require("../model/taskModel");
 
-//create the task record
+function getUserId(req) {
+  return req.user?.id || req.userId?.id || req.userID?.id;
+}
 
 exports.createTask = async (req, res) => {
   try {
     const { text } = req.body;
+    const userId = getUserId(req);
 
-    const lastTask = await taskModel.findOne().sort({ order: -1 });
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (!text) {
+      return res.status(400).json({ message: "Task text is required" });
+    }
+
+    const lastTask = await taskModel.findOne({ user: userId }).sort({ order: -1 });
     const nextOrder = lastTask ? lastTask.order + 1 : 0;
 
-    const newTask = new taskModel({ text, status: "todo", order: nextOrder });
+    const newTask = new taskModel({
+      text,
+      status: "todo",
+      order: nextOrder,
+      user: userId,
+    });
     const saved = await newTask.save();
 
-    res.status(201).json(saved);
+    return res.status(201).json(saved);
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 exports.getAllTasks = async (req, res) => {
   try {
-    const tasks = await taskModel.find().sort({ order: 1 });
-    res.status(200).json(tasks);
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const tasks = await taskModel.find({ user: userId }).sort({ order: 1 });
+    return res.status(200).json(tasks);
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 exports.deleteTask = async (req, res) => {
   try {
     const { id } = req.params;
-    const deleted = await taskModel.findByIdAndDelete(id);
-    res.status(200).json(deleted._id);
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const deleted = await taskModel.findOneAndDelete({
+      _id: id,
+      user: userId,
+    });
+
+    if (!deleted) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
+    return res.status(200).json({ id: deleted._id });
   } catch (error) {
-    console.log(error);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
 exports.markComplete = async (req, res) => {
   try {
-    const task = await taskModel.findById(req.params.id);
+    const userId = getUserId(req);
+    const { id } = req.params;
+    const { status } = req.body || {};
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    if (status) {
+      const allowedStatus = ["todo", "doing", "done"];
+      if (!allowedStatus.includes(status)) {
+        return res.status(400).json({ message: "Invalid status value" });
+      }
+
+      const updated = await taskModel.findOneAndUpdate(
+        { _id: id, user: userId },
+        { $set: { status } },
+        { new: true },
+      );
+
+      if (!updated) {
+        return res.status(404).json({ message: "Task not found" });
+      }
+
+      return res.status(200).json(updated);
+    }
+
+    const task = await taskModel.findOne({ _id: id, user: userId });
+    if (!task) {
+      return res.status(404).json({ message: "Task not found" });
+    }
+
     task.completed = !task.completed;
     await task.save();
-    res.json(task);
-  } catch (err) {}
+    return res.status(200).json(task);
+  } catch (err) {
+    return res.status(500).json({ message: "Server error" });
+  }
 };

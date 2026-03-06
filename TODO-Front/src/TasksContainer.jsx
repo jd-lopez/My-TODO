@@ -27,7 +27,7 @@ function TasksContainer({ tasks, onDelete, onComplete, onMove }) {
           return (
             <div
               key={task._id}
-              className={`group flex items-center gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-105 hover:cursor-pointer ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
+              className={`group flex items-center gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-102 hover:cursor-pointer ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
             >
               <div
                 className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200 ${isDark ? "border-white" : "border-purple-600"}

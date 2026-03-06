@@ -3,12 +3,13 @@ import { NavLink, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 
-function Login() {
+function SignUp() {
   const { isDark } = useTheme();
   const navigate = useNavigate();
-  const { login, loading } = useAuth();
+  const { signup, loading } = useAuth();
 
   const [formData, setFormData] = useState({
+    name: "",
     email: "",
     password: "",
   });
@@ -26,7 +27,7 @@ function Login() {
     e.preventDefault();
     setError("");
     try {
-      await login(formData.email, formData.password);
+      await signup(formData.name, formData.email, formData.password);
       navigate("/app");
     } catch (err) {
       setError(err.message);
@@ -89,26 +90,43 @@ function Login() {
           }`}
         >
           <div className="flex flex-col gap-1">
-            <h1 className="font-bold text-2xl">Welcome Back</h1>
+            <h1 className="font-bold text-2xl">Create Account</h1>
             <p className="text-sm ">
-              Log in to manage your productivity and teams
+              Sign up to manage your productivity and teams
             </p>
           </div>
           <div className="flex justify-between gap-2">
             <NavLink
               to="/login"
-              className="text-blue-700 border-b-2 border-blue-700 px-5 py-2 text-sm grow text-center"
+              className="border-b-2 border-b-gray-400 px-5 py-2 text-sm grow text-center"
             >
               Sign in
             </NavLink>
             <NavLink
               to="/signup"
-              className="border-b-2 border-b-gray-400 px-5 py-2 text-sm grow text-center"
+              className="text-blue-700 border-b-2 border-blue-700 px-5 py-2 text-sm grow text-center"
             >
               Sign up
             </NavLink>
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+            <div className="flex flex-col space-y-2 md:space-y-3">
+              <label htmlFor="name">Name</label>
+              <input
+                type="text"
+                id="name"
+                name="name"
+                required
+                value={formData.name}
+                placeholder="Enter your name"
+                className={`border rounded-md p-2 ${
+                  isDark
+                    ? "bg-slate-800 text-white border-gray-700"
+                    : "bg-white text-black border-gray-300"
+                }`}
+                onChange={handleChange}
+              />
+            </div>
             <div className="flex flex-col space-y-2 md:space-y-3">
               <label htmlFor="email">Email</label>
               <input
@@ -148,16 +166,16 @@ function Login() {
               disabled={loading}
               className="mt-5 bg-blue-700 hover:bg-blue-800 text-white py-2 px-4 rounded-md w-full"
             >
-              {loading ? "Logging in..." : "Log In"}
+              {loading ? "Creating account..." : "Sign Up"}
             </button>
 
             {error && <p className="text-red-500">{error}</p>}
           </form>
 
           <span className={`${isDark ? "text-gray-400" : "text-gray-600"}`}>
-            Don't have an account yet?{" "}
-            <NavLink to="/signup" className="text-blue-700">
-              Sign up
+            Already have an account?{" "}
+            <NavLink to="/login" className="text-blue-700">
+              Log in
             </NavLink>
           </span>
         </div>
@@ -166,4 +184,4 @@ function Login() {
   );
 }
 
-export default Login;
+export default SignUp;

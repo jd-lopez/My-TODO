@@ -54,27 +54,29 @@ export default function Landing() {
             : "bgImgMobDay md:bgImgDeskDay"
         }`}
       >
-        <div className="mx-auto w-full max-w-6xl px-6 py-10 md:py-12">
+        <div className="mx-auto w-full  max-w-6xl px-6 py-10 md:py-12">
           <div
-            className={`mx-auto max-w-3xl rounded-3xl border p-8 shadow-2xl backdrop-blur-md md:p-10 ${
+            className={`mx-auto max-w-3xl rounded-3xl flex flex-col justify-between items-stretch border p-8 shadow-2xl backdrop-blur-md md:p-10 ${
               isDark
                 ? "bg-slate-900/75 border-slate-700"
                 : "bg-white/80 border-slate-200"
             }`}
           >
-            <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-600">
-              {slides[activeSlide].tag}
-            </p>
-            <h1 className="mt-3 text-4xl font-bold leading-tight md:text-6xl">
-              {slides[activeSlide].title}
-            </h1>
-            <p
-              className={`mt-5 text-base md:text-lg ${
-                isDark ? "text-slate-300" : "text-slate-700"
-              }`}
-            >
-              {slides[activeSlide].text}
-            </p>
+            <div>
+              <p className="text-sm font-semibold tracking-[0.2em] uppercase text-blue-600">
+                {slides[activeSlide].tag}
+              </p>
+              <h1 className="mt-3 min-h-34 text-4xl font-bold leading-tight md:min-h-80 md:text-6xl">
+                {slides[activeSlide].title}
+              </h1>
+              <p
+                className={`mt-5 min-h-18 text-base md:min-h-14 md:text-lg ${
+                  isDark ? "text-slate-300" : "text-slate-700"
+                }`}
+              >
+                {slides[activeSlide].text}
+              </p>
+            </div>
 
             <div className="mt-6 flex items-center justify-between gap-3">
               <div className="flex items-center gap-2">

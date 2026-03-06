@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import "./App.css";
-import api from "./api/api";
+import api from "./services/api";
 import InputTask from "./ImputTask";
 import { useTheme } from "./context/ThemeContext";
 import KanbanBoard from "./KanbanBoard";
