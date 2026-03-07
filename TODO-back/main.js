@@ -6,14 +6,14 @@ const taskController = require("./controller/taskController");
 const authController = require("./controller/authController");
 const authMiddleware = require("./middleware/auth");
 
-mongoose
-  .connect(process.env.MONGO_URI)
-  .then(() => {
-    console.log("Database connected");
-  })
-  .catch((err) => {
-    console.log(`Database connection error: ${err}`);
-  });
+const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "CLIENT_URL"];
+const missingEnvVars = requiredEnvVars.filter((key) => !process.env[key]);
+
+if (missingEnvVars.length > 0) {
+  throw new Error(
+    `Missing required environment variables: ${missingEnvVars.join(", ")}`,
+  );
+}
 
 const app = express();
 
@@ -41,4 +41,14 @@ app.post("/login", authController.login);
 app.post("/register", authController.register);
 
 const PORT = process.env.PORT || 4000;
-app.listen(PORT, () => console.log(`API running on ${PORT}`));
+
+mongoose
+  .connect(process.env.MONGO_URI)
+  .then(() => {
+    console.log("Database connected");
+    app.listen(PORT, () => console.log(`API running on ${PORT}`));
+  })
+  .catch((err) => {
+    console.error("Database connection error:", err);
+    process.exit(1);
+  });
