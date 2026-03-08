@@ -28,7 +28,7 @@ export default function Home() {
             Signed In
           </p>
           <h1 className="mt-3 text-3xl font-bold md:text-5xl">
-            Welcome back{user?.name ? `, ${user.name}` : ""}.
+            Welcome back{user?.name.first ? `, ${user.name.first}` : ""}.
           </h1>
           <p
             className={`mt-4 max-w-2xl text-base md:text-lg ${

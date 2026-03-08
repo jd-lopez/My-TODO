@@ -1,13 +1,17 @@
 import { createContext, useContext, useState } from "react";
 import { loginUser, registerUser } from "../services/authService";
+
+// This context is the shared auth state container for the entire frontend app.
 const AuthContext = createContext();
 
 export function AuthProvider({ children }) {
+  // Rehydrate the user from localStorage so refreshes keep the current session in memory.
   const [user, setUser] = useState(() => {
     const storedUser = localStorage.getItem("user");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
+  // Store the JWT in state too, so route guards and components react immediately to login/logout.
   const [token, setToken] = useState(
     () => localStorage.getItem("token") || null,
   );
@@ -18,6 +22,7 @@ export function AuthProvider({ children }) {
     try {
       const data = await loginUser({ email, password });
 
+      // Persist auth data in localStorage and state so the session survives refreshes.
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
       setToken(data.token);
@@ -30,11 +35,17 @@ export function AuthProvider({ children }) {
     }
   }
 
-  async function signup(name, email, password) {
+  async function signup(first, last, email, password) {
     setLoading(true);
     try {
-      const data = await registerUser({ name, email, password });
+      const data = await registerUser({
+        first,
+        last,
+        email,
+        password,
+      });
 
+      // Signup behaves like login: a successful registration immediately creates a signed-in session.
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data.user));
 
@@ -54,6 +65,8 @@ export function AuthProvider({ children }) {
     setToken(null);
     setUser(null);
   }
+
+  // Route guards only need to know whether both pieces of auth state exist.
   const isAuthenticated = Boolean(token && user);
 
   return (
@@ -66,5 +79,6 @@ export function AuthProvider({ children }) {
 }
 
 export function useAuth() {
+  // This hook is the single public API for auth state inside React components.
   return useContext(AuthContext);
 }

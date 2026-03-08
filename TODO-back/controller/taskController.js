@@ -1,6 +1,7 @@
 const taskModel = require("../model/taskModel");
 
 function getUserId(req) {
+  // Keep compatibility with the older request field names used earlier in the project.
   return req.user?.id || req.userId?.id || req.userID?.id;
 }
 
@@ -89,6 +90,7 @@ exports.markComplete = async (req, res) => {
         return res.status(400).json({ message: "Invalid status value" });
       }
 
+      // The same endpoint handles moving a task between columns when a status is provided.
       const updated = await taskModel.findOneAndUpdate(
         { _id: id, user: userId },
         { $set: { status } },

@@ -9,7 +9,8 @@ function SignUp() {
   const { signup, loading } = useAuth();
 
   const [formData, setFormData] = useState({
-    name: "",
+    first: "",
+    last: "",
     email: "",
     password: "",
   });
@@ -27,7 +28,12 @@ function SignUp() {
     e.preventDefault();
     setError("");
     try {
-      await signup(formData.name, formData.email, formData.password);
+      await signup(
+        formData.first,
+        formData.last,
+        formData.email,
+        formData.password,
+      );
       navigate("/app");
     } catch (err) {
       setError(err.message);
@@ -111,14 +117,14 @@ function SignUp() {
           </div>
           <form onSubmit={handleSubmit} className="flex flex-col gap-2">
             <div className="flex flex-col space-y-2 md:space-y-3">
-              <label htmlFor="name">Name</label>
+              <label htmlFor="firstName">First Name</label>
               <input
                 type="text"
-                id="name"
-                name="name"
+                id="firstName"
+                name="first"
                 required
-                value={formData.name}
-                placeholder="Enter your name"
+                value={formData.first}
+                placeholder="Enter your first name"
                 className={`border rounded-md p-2 ${
                   isDark
                     ? "bg-slate-800 text-white border-gray-700"
@@ -127,6 +133,25 @@ function SignUp() {
                 onChange={handleChange}
               />
             </div>
+
+            <div className="flex flex-col space-y-2 md:space-y-3">
+              <label htmlFor="lastName">Last Name</label>
+              <input
+                type="text"
+                id="lastName"
+                name="last"
+                required
+                value={formData.last}
+                placeholder="Enter your last name"
+                className={`border rounded-md p-2 ${
+                  isDark
+                    ? "bg-slate-800 text-white border-gray-700"
+                    : "bg-white text-black border-gray-300"
+                }`}
+                onChange={handleChange}
+              />
+            </div>
+
             <div className="flex flex-col space-y-2 md:space-y-3">
               <label htmlFor="email">Email</label>
               <input

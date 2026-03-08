@@ -10,7 +10,8 @@ import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 
 function Top({ onToggleSidebar, isSidebarOpen }) {
   const { isDark, toggleTheme } = useTheme();
-  const { isAuthenticated, logout } = useAuth();
+  const { user, isAuthenticated, logout } = useAuth();
+  const initials = `${user?.name?.first?.[0] || ""}${user?.name?.last?.[0] || ""}`.toUpperCase();
 
   return (
     <header
@@ -64,6 +65,21 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
             <FontAwesomeIcon icon={faMoon} />
           )}
         </button>
+
+        {isAuthenticated ? (
+          <button
+            type="button"
+            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-xs font-bold ${
+              isDark
+                ? "border-slate-600 bg-slate-800 text-white"
+                : "border-gray-300 bg-gray-100 text-slate-900"
+            }`}
+            aria-label={user?.name ? `${user.name.first} ${user.name.last}`.trim() : "User initials"}
+            title={user?.name ? `${user.name.first} ${user.name.last}`.trim() : "User initials"}
+          >
+            {initials || "U"}
+          </button>
+        ) : null}
       </div>
     </header>
   );

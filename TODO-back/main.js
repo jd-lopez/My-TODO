@@ -16,10 +16,30 @@ if (missingEnvVars.length > 0) {
 }
 
 const app = express();
+const configuredOrigins = process.env.CLIENT_URL.split(",")
+  .map((origin) => origin.trim())
+  .filter(Boolean);
+const localOrigins =
+  process.env.NODE_ENV !== "production"
+    ? [
+        "http://localhost:5173",
+        "http://127.0.0.1:5173",
+        "http://localhost:4173",
+        "http://127.0.0.1:4173",
+      ]
+    : [];
+const allowedOrigins = new Set([...configuredOrigins, ...localOrigins]);
 
 app.use(
   cors({
-    origin: process.env.CLIENT_URL,
+    origin(origin, callback) {
+      // Allow multiple deployed clients and common local Vite origins without changing code.
+      if (!origin || allowedOrigins.has(origin)) {
+        return callback(null, true);
+      }
+
+      return callback(new Error(`CORS blocked for origin: ${origin}`));
+    },
     credentials: true,
   }),
 );
@@ -46,6 +66,7 @@ mongoose
   .connect(process.env.MONGO_URI)
   .then(() => {
     console.log("Database connected");
+    // The API only starts after MongoDB connects, so requests never hit a half-started server.
     app.listen(PORT, () => console.log(`API running on ${PORT}`));
   })
   .catch((err) => {

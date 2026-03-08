@@ -21,6 +21,7 @@ const taskSchema = new mongoose.Schema({
   },
   user: {
     type: mongoose.Schema.Types.ObjectId,
+    // Each task belongs to one user, which is how dashboard queries stay isolated per account.
     ref: "User",
     required: true,
   },
