@@ -7,11 +7,16 @@ import { faXmark } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "./context/AuthContext";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons";
+import { useState } from "react";
+import NewBoard from "./features/boards/components/NewBoard";
 
 function Top({ onToggleSidebar, isSidebarOpen }) {
+  const [showModal, setShowModal] = useState(false);
+
   const { isDark, toggleTheme } = useTheme();
   const { user, isAuthenticated, logout } = useAuth();
-  const initials = `${user?.name?.first?.[0] || ""}${user?.name?.last?.[0] || ""}`.toUpperCase();
+  const initials =
+    `${user?.name?.first?.[0] || ""}${user?.name?.last?.[0] || ""}`.toUpperCase();
 
   return (
     <header
@@ -37,6 +42,15 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
         </NavLink>
       </div>
       <div className="flex items-center gap-2 md:gap-3 text-sm md:text-lg">
+        <button
+          className="bg-blue-700 text-white rounded-md px-2 py-1 font-bold cursor-pointer"
+          onClick={() => setShowModal(true)}
+        >
+          Create
+        </button>
+
+        {showModal && <NewBoard onClose={() => setShowModal(false)} />}
+
         {isAuthenticated ? (
           <button
             onClick={logout}
@@ -74,8 +88,16 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
                 ? "border-slate-600 bg-slate-800 text-white"
                 : "border-gray-300 bg-gray-100 text-slate-900"
             }`}
-            aria-label={user?.name ? `${user.name.first} ${user.name.last}`.trim() : "User initials"}
-            title={user?.name ? `${user.name.first} ${user.name.last}`.trim() : "User initials"}
+            aria-label={
+              user?.name
+                ? `${user.name.first} ${user.name.last}`.trim()
+                : "User initials"
+            }
+            title={
+              user?.name
+                ? `${user.name.first} ${user.name.last}`.trim()
+                : "User initials"
+            }
           >
             {initials || "U"}
           </button>

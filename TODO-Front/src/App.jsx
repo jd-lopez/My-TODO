@@ -1,14 +1,15 @@
 import "./App.css";
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
-import Dashboard from "./Dashboard";
-import Layout from "./Layout";
-import Home from "./Home";
+import Dashboard from "./pages/Dashboard";
+import Layout from "./layouts/Layout";
+import Home from "./pages/Home";
 import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SingUp";
 import Landing from "./pages/landing/Landing";
-import PublicLayout from "./PublicLayout";
+import PublicLayout from "./layouts/PublicLayout";
 import { useAuth } from "./context/AuthContext";
 import ProtectedRoute from "./ProtectedRoutes";
+import Board from "./features/boards/components/Board";
 
 function App() {
   const { isAuthenticated } = useAuth();
@@ -42,6 +43,7 @@ function App() {
         >
           <Route index element={<Home />} />
           <Route path="dashboard" element={<Dashboard />} />
+          <Route path="board/:id" element={<Board />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

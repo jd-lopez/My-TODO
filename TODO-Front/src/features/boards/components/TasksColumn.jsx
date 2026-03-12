@@ -1,6 +1,6 @@
 import React from "react";
 import TasksContainer from "./TasksContainer";
-import { useTheme } from "./context/ThemeContext";
+import { useTheme } from "../../../context/ThemeContext";
 import NewTask from "./NewTask";
 
 function TasksColumn({ title, tasks, onDelete, onComplete, onMove, onCreate }) {

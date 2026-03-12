@@ -2,7 +2,7 @@ import React from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "./context/ThemeContext";
+import { useTheme } from "../../../context/ThemeContext";
 
 export default function NewTask({ onCreate }) {
   const { isDark } = useTheme();

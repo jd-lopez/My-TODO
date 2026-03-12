@@ -4,6 +4,7 @@ const cors = require("cors");
 require("dotenv").config();
 const taskController = require("./controller/taskController");
 const authController = require("./controller/authController");
+const boardController = require("./controller/boardController");
 const authMiddleware = require("./middleware/auth");
 
 const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "CLIENT_URL"];
@@ -53,10 +54,12 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 app.get("/tasks", authMiddleware, taskController.getAllTasks);
+app.post("/board", authMiddleware, boardController.createBoard);
+
 app.post("/tasks", authMiddleware, taskController.createTask);
 app.delete("/tasks/:id", authMiddleware, taskController.deleteTask);
 app.patch("/tasks/:id", authMiddleware, taskController.markComplete);
-
+app.get("/board/:id", authMiddleware, boardController.getBoard);
 app.post("/login", authController.login);
 app.post("/register", authController.register);
 

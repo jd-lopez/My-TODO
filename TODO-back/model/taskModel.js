@@ -1,15 +1,25 @@
 const mongoose = require("mongoose");
 
 const taskSchema = new mongoose.Schema({
-  text: {
+  board: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "Board",
+    required: true,
+  },
+  list: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "List",
+    required: true,
+  },
+  title: {
     type: String,
     required: true,
     trim: true,
   },
-  status: {
+  description: {
     type: String,
-    enum: ["todo", "doing", "done"],
-    default: "todo",
+    default: "",
+    trim: true,
   },
   completed: {
     type: Boolean,

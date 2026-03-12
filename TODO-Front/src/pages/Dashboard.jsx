@@ -1,9 +1,7 @@
 import { useState, useEffect } from "react";
-import "./App.css";
-import api from "./services/api";
-import InputTask from "./ImputTask";
-import { useTheme } from "./context/ThemeContext";
-import KanbanBoard from "./KanbanBoard";
+import api from "../services/api";
+import { useTheme } from "../context/ThemeContext";
+import KanbanBoard from "../features/boards/components/KanbanBoard";
 
 export default function Dashboard() {
   const [tasks, setTasks] = useState([]);
@@ -56,7 +54,6 @@ export default function Dashboard() {
         ${isDark ? "bg-slate-900 bgImgMobNight md:bgImgDeskNight bg-bottom " : "bgImgMobDay md:bgImgDeskDay bg-bottom"}`}
     >
       <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-gray-400 to-gray-300 opacity-30"></div>
-      <InputTask />
       <KanbanBoard
         tasks={tasks}
         onDelete={deleteTask}

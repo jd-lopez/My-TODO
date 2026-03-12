@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link, Outlet, useLocation } from "react-router-dom";
-import { useTheme } from "./context/ThemeContext";
+import { useTheme } from "../context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faMoon, faSun } from "@fortawesome/free-solid-svg-icons";
 
@@ -14,7 +14,11 @@ export default function PublicLayout() {
   }, [pathname]);
 
   return (
-    <div className={isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"}>
+    <div
+      className={
+        isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"
+      }
+    >
       <header
         className={`sticky top-0 z-30 border-b backdrop-blur ${
           isDark

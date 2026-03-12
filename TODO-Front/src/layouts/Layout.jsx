@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Top from "./Top";
-import { useTheme } from "./context/ThemeContext";
-import Sidebar from "./Sidebar";
+import Top from "../Top";
+import { useTheme } from "../context/ThemeContext";
+import Sidebar from "../Sidebar";
 import { useState } from "react";
 
 export default function Layout() {
@@ -12,7 +12,7 @@ export default function Layout() {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="min-h-screen flex flex-col overflow-hidden">
+    <div className="min-h-screen flex flex-col overflow-hidden relative">
       <Top onToggleSidebar={toggleSidebar} isSidebarOpen={isOpen} />
 
       <div className="flex flex-1 min-h-0">

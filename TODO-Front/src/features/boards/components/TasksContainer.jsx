@@ -1,11 +1,9 @@
-import TaskFilters from "./TaskFilters";
-import crossIcon from "./assets/icon-cross.svg";
-import crossIconDark from "./assets/icon_cross_dark.svg";
-import edit from "./assets/pencil.svg";
-import editDark from "./assets/pencil_dark.svg";
-import checkIcon from "./assets/icon-check.svg";
-import { useTheme } from "./context/ThemeContext";
-import InputTask from "./ImputTask";
+import crossIcon from "../../../assets/icon-cross.svg";
+import crossIconDark from "../../../assets/icon_cross_dark.svg";
+import edit from "../../../assets/pencil.svg";
+import editDark from "../../../assets/pencil_dark.svg";
+import checkIcon from "../../../assets/icon-check.svg";
+import { useTheme } from "../../../context/ThemeContext";
 
 function TasksContainer({ tasks, onDelete, onComplete, onMove }) {
   const { isDark } = useTheme();
