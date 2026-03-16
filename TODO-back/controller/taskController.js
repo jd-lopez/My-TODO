@@ -18,13 +18,14 @@ exports.createTask = async (req, res) => {
       return res.status(400).json({ message: "Task text is required" });
     }
 
-    const lastTask = await taskModel.findOne({ user: userId }).sort({ order: -1 });
+    const lastTask = await taskModel
+      .findOne({ user: userId })
+      .sort({ order: -1 });
     const nextOrder = lastTask ? lastTask.order + 1 : 0;
 
     const newTask = new taskModel({
       text,
-      status: "todo",
-      order: nextOrder,
+
       user: userId,
     });
     const saved = await newTask.save();

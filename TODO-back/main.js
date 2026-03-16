@@ -54,9 +54,9 @@ app.get("/", (req, res) => {
   res.send("API is running");
 });
 app.get("/tasks", authMiddleware, taskController.getAllTasks);
-app.post("/board", authMiddleware, boardController.createBoard);
-
+app.get("/boards", authMiddleware, boardController.getAllBoards);
 app.post("/tasks", authMiddleware, taskController.createTask);
+app.post("/board", authMiddleware, boardController.createBoard);
 app.delete("/tasks/:id", authMiddleware, taskController.deleteTask);
 app.patch("/tasks/:id", authMiddleware, taskController.markComplete);
 app.get("/board/:id", authMiddleware, boardController.getBoard);

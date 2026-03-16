@@ -4,14 +4,14 @@ const taskSchema = new mongoose.Schema({
   board: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "Board",
-    required: true,
+    required: false,
   },
   list: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "List",
-    required: true,
+    required: false,
   },
-  title: {
+  text: {
     type: String,
     required: true,
     trim: true,

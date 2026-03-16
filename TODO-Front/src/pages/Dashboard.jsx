@@ -15,11 +15,11 @@ export default function Dashboard() {
 
   async function createTask(text) {
     try {
-      const res = await api.post("/tasks", { text, status: "todo" });
+      const res = await api.post("/tasks", { text });
       const newTask = res.data;
       setTasks((prev) => [...prev, newTask]);
     } catch (err) {
-      console.error(err);
+      console.error("This is the error: ", err);
     }
   }
 

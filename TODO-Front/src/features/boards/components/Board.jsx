@@ -1,5 +1,6 @@
 import React from "react";
 import { useEffect, useState } from "react";
+import Dashboard from "../../../pages/Dashboard";
 import { useParams } from "react-router-dom";
 import api from "../../../services/api";
 
@@ -44,6 +45,8 @@ function Board() {
           </button>
         </div>
       </div>
+
+      <Dashboard />
     </div>
   );
 }

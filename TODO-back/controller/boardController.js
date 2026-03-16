@@ -19,6 +19,22 @@ exports.createBoard = async (req, res) => {
   }
 };
 
+exports.getAllBoards = async (req, res) => {
+  try {
+    const userId = req.user?.id || req.userId?.id || req.userID?.id;
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const boards = await boardModel.find({ owner: userId });
+
+    return res.status(200).json(boards);
+  } catch (err) {
+    return res.status(500).json({ message: "Server down" });
+  }
+};
+
 exports.getBoard = async (req, res) => {
   try {
     const { id } = req.params;
