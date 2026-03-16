@@ -29,25 +29,31 @@ export default function Home() {
 
         {/*Board list container */}
         <div className="grid grid-cols-4 gap-2">
-          {boards.map((board) => {
-            return (
-              <div
-                to="/app/board"
-                className={`flex flex-col rounded-2xl shadow-sm justify-between h-46 max-w-60 ${isDark ? "bg-gray-500 text-white" : ""}`}
-                key={board._id}
-                onClick={() => {
-                  navigate(`/app/board/${board._id}`);
-                }}
-              >
-                <img
-                  src="/images/sunset.jpg"
-                  alt=""
-                  className="rounded-tl-2xl rounded-tr-2xl h-3/4 object-cover"
-                />
-                <h2 className="text-lg font-semibold p-2">{board.title}</h2>
-              </div>
-            );
-          })}
+          {boards.length > 0 ? (
+            <>
+              {boards.map((board) => {
+                return (
+                  <div
+                    to="/app/board"
+                    className={`flex flex-col rounded-2xl shadow-sm justify-between h-46 max-w-60 ${isDark ? "bg-gray-500 text-white" : ""}`}
+                    key={board._id}
+                    onClick={() => {
+                      navigate(`/app/board/${board._id}`);
+                    }}
+                  >
+                    <img
+                      src="/images/sunset.jpg"
+                      alt=""
+                      className="rounded-tl-2xl rounded-tr-2xl h-3/4 object-cover"
+                    />
+                    <h2 className="text-lg font-semibold p-2">{board.title}</h2>
+                  </div>
+                );
+              })}
+            </>
+          ) : (
+            <div>No board yet</div>
+          )}
         </div>
       </div>
     </section>
