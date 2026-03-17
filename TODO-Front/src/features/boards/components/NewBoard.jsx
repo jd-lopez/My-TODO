@@ -3,10 +3,12 @@ import { useState } from "react";
 import api from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
+import { useTheme } from "../../../context/ThemeContext";
 
-export default function NewBoard({ onClose }) {
+export default function NewBoard({ showModal, onClose }) {
   const [title, setTitle] = useState("");
   const { user } = useAuth();
+  const { isDark } = useTheme();
 
   const navigate = useNavigate();
 
@@ -24,41 +26,54 @@ export default function NewBoard({ onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    // TODO: Implement board creation logic here
+
     createBoard(title);
   };
 
   return (
-    <div className="fixed top-20 right-10">
-      <div className="bg-white rounded-md shadow-lg w-60 max-w-md">
-        <dialog open className="w-full">
-          <form
-            action=""
-            onSubmit={handleSubmit}
-            className="flex flex-col justify-between h-full gap-10"
-          >
-            <h1>New Board</h1>
+    <div className={`absolute top-17 z-50 right-46 md:top-19 md:right-62 `}>
+      <dialog
+        open
+        className={`px-4 py-6 rounded-md ${isDark ? "bg-slate-700 text-white" : ""}`}
+      >
+        <form
+          action=""
+          onSubmit={handleSubmit}
+          className="flex flex-col justify-between h-full gap-10"
+        >
+          <h1 className="self-center font-bold bg-linear-to-r from-blue-600 to-cyan-300 bg-clip-text text-transparent ">
+            New Board
+          </h1>
 
-            <div>
-              <label htmlFor="board-title">Board Title</label>
-              <input
-                type="text"
-                id="board-title"
-                value={title}
-                onChange={(e) => setTitle(e.target.value)}
-                className="border rounded-md border-gray-500 "
-              />
-            </div>
+          <div>
+            <label className="text-sm" htmlFor="board-title">
+              Board Title
+            </label>
+            <input
+              type="text"
+              id="board-title"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="border rounded-md border-gray-500 "
+            />
+          </div>
 
+          <div className="flex justify-between">
             <button
               type="submit"
-              className="bg-blue-700 text-white rounded-md px-2 py-1 font-bold cursor-pointer"
+              className="bg-blue-500 text-white rounded-md px-2 py-1 font-bold cursor-pointer hover:bg-blue-700"
             >
               Create
             </button>
-          </form>
-        </dialog>
-      </div>
+            <button
+              className="bg-red-500 rounded-md px-2 text-white font-bold cursor-pointer hover:bg-red-700"
+              onClick={() => onClose()}
+            >
+              Cancel
+            </button>
+          </div>
+        </form>
+      </dialog>
     </div>
   );
 }

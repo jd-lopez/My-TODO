@@ -9,6 +9,7 @@ import { useAuth } from "./context/AuthContext";
 import { faSignOut } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import NewBoard from "./features/boards/components/NewBoard";
+import { Fragment } from "react";
 
 function Top({ onToggleSidebar, isSidebarOpen }) {
   const [showModal, setShowModal] = useState(false);
@@ -37,27 +38,37 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
         >
           <FontAwesomeIcon icon={isSidebarOpen ? faXmark : faBars} />
         </button>
-        <NavLink className="font-bold text-sm md:text-base" to="/app">
+        <NavLink
+          className=" text-sm md:text-base font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent"
+          to="/app"
+        >
           TODO
         </NavLink>
       </div>
       <div className="flex items-center gap-2 md:gap-3 text-sm md:text-lg">
         <button
-          className="bg-blue-700 text-white rounded-md px-2 py-1 font-bold cursor-pointer"
-          onClick={() => setShowModal(true)}
+          className={`bg-blue-800 text-white rounded-md px-2 py-1 font-bold cursor-pointer ${isDark ? "hover:darkShadow" : "hover:lightShadow"}`}
+          onClick={() => setShowModal(!showModal)}
         >
           Create
         </button>
 
-        {showModal && <NewBoard onClose={() => setShowModal(false)} />}
+        {showModal && (
+          <Fragment>
+            <div
+              className={`fixed z-40 ${showModal ? "top-14 bottom-0 left-0 right-0" : ""} ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
+            ></div>
+            <NewBoard onClose={() => setShowModal(false)} />
+          </Fragment>
+        )}
 
         {isAuthenticated ? (
           <button
             onClick={logout}
             className={`rounded-md border px-2 py-1 ${
               isDark
-                ? "border-slate-600 hover:bg-slate-800"
-                : "border-gray-300 hover:bg-gray-100"
+                ? "border-slate-600 hover:bg-slate-800 hover:darkShadow"
+                : "border-gray-300 hover:bg-gray-100 hover:lightShadow"
             }`}
             aria-label="Log out"
           >
@@ -68,8 +79,8 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
           onClick={toggleTheme}
           className={`rounded-md border px-2 py-1 ${
             isDark
-              ? "border-slate-600 hover:bg-slate-800"
-              : "border-gray-300 hover:bg-gray-100"
+              ? "border-slate-600 hover:bg-slate-800 hover:darkShadow"
+              : "border-gray-300 hover:bg-gray-100 hover:lightShadow"
           }`}
           aria-label={isDark ? "Activate light mode" : "Activate dark mode"}
         >
@@ -85,8 +96,8 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
             type="button"
             className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-xs font-bold ${
               isDark
-                ? "border-slate-600 bg-slate-800 text-white"
-                : "border-gray-300 bg-gray-100 text-slate-900"
+                ? "border-slate-600 bg-slate-800 text-white hover:darkShadow"
+                : "border-gray-300 bg-gray-100 text-slate-900 hover:lightShadow"
             }`}
             aria-label={
               user?.name

@@ -50,10 +50,9 @@ export default function Dashboard() {
   return (
     <div
       className={`min-h-full transition-all delay-75 text-sm
-      md:text-2xl bg-no-repeat bg-cover  relative flex flex-col 
+      md:text-2xl bg-no-repeat bg-cover relative flex h-full min-h-0 flex-col overflow-hidden
         ${isDark ? "bg-slate-900 bgImgMobNight md:bgImgDeskNight bg-bottom " : "bgImgMobDay md:bgImgDeskDay bg-bottom"}`}
     >
-      <div className="absolute top-0 left-0 w-full h-full bg-linear-to-b from-gray-400 to-gray-300 opacity-30"></div>
       <KanbanBoard
         tasks={tasks}
         onDelete={deleteTask}

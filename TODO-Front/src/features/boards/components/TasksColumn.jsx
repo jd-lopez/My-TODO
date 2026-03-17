@@ -8,18 +8,20 @@ function TasksColumn({ title, tasks, onDelete, onComplete, onMove, onCreate }) {
 
   return (
     <div
-      className={`${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} flex flex-col p-2 min-h-0 rounded-md`}
+      className={`min-h-0 flex flex-col rounded-md p-2 ${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} `}
     >
-      <div className="font-bold p-2">{title}</div>
-      <>
-        <TasksContainer
-          tasks={tasks}
-          onDelete={onDelete}
-          onComplete={onComplete}
-          onMove={onMove ? (id) => onMove(id, "doing") : undefined}
-        />
-        {onCreate && <NewTask onCreate={onCreate} />}
-      </>
+      <div className="shrink-0 p-2 font-bold">{title}</div>
+      <TasksContainer
+        tasks={tasks}
+        onDelete={onDelete}
+        onComplete={onComplete}
+        onMove={onMove ? (id) => onMove(id, "doing") : undefined}
+      />
+      {onCreate && (
+        <div className="shrink-0">
+          <NewTask onCreate={onCreate} />
+        </div>
+      )}
     </div>
   );
 }

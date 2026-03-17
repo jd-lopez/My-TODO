@@ -1,6 +1,12 @@
 @import "tailwindcss";
 @custom-variant dark (&:where(.dark, .dark *));
 
+html,
+body,
+#root {
+  height: 100%;
+}
+
 @utility bgImgMobDay {
   background-image: url("/images/landscape_day.jpg");
 }
@@ -14,4 +20,11 @@
 }
 @utility bgImgDeskNight {
   background-image: url("/images/cosmos_night.jpg");
+}
+
+@utility lightShadow {
+  box-shadow: 0 0 4px 1px hsl(0, 0%, 67%);
+}
+@utility darkShadow {
+  box-shadow: 0 0 6px 1px hsl(219, 97%, 69%);
 }
