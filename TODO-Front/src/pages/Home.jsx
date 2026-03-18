@@ -21,7 +21,7 @@ export default function Home() {
         isDark ? "bg-gray-800 text-white" : "bg-slate-50 text-slate-900"
       }`}
     >
-      <div className="mx-auto flex w-full min-h-0 flex-1 flex-col px-4 py-8">
+      <div className="mx-auto flex w-full min-h-0 flex-1 flex-col px-4 py-4">
         <h1 className="text-2xl w-fit mb-4 font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent">
           My Boards
         </h1>

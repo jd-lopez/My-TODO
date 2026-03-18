@@ -42,7 +42,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                   className={({ isActive }) =>
                     `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
                       isActive
-                        ? "bg-red-500 text-white"
+                        ? "bg-white text-black"
                         : isDark
                           ? "hover:bg-slate-800"
                           : "hover:bg-gray-100"
@@ -146,7 +146,15 @@ function Sidebar({ isOpen, toggleSidebar }) {
             <NavLink
               to="/login"
               onClick={handleLogout}
-              className="flex items-center justify-between gap-2 px-3 py-2"
+              className={({ isActive }) =>
+                `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
+                  isActive
+                    ? "bg-blue-500 text-white"
+                    : isDark
+                      ? "hover:bg-slate-800"
+                      : "hover:bg-gray-100"
+                }`
+              }
             >
               {isOpen && <span className="whitespace-nowrap">Log Out</span>}
               <FontAwesomeIcon icon={faSignOut} className="rotate-180" />

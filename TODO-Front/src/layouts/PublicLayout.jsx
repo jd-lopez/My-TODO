@@ -15,7 +15,7 @@ export default function PublicLayout() {
 
   return (
     <div
-      className={`overflow-y-auto h-dvh ${isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"}`}
+      className={` scroll-smooth  ${isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"}`}
     >
       <header
         className={`sticky top-0 z-30 border-b backdrop-blur ${
@@ -25,7 +25,11 @@ export default function PublicLayout() {
         }`}
       >
         <nav className="mx-auto flex w-full max-w-6xl items-center justify-between px-6 py-4">
-          <Link to="/" className="text-lg font-bold tracking-wide">
+          <Link
+            to="/"
+            className="text-lg font-bold tracking-wide"
+            onClick={() => window.scrollTo({ top: 0, behavior: "smooth" })}
+          >
             TODO FLOW
           </Link>
 
@@ -149,7 +153,7 @@ export default function PublicLayout() {
             >
               <div className="flex flex-col gap-2">
                 <a
-                  href="/#features"
+                  href="#features"
                   className={`rounded-lg px-3 py-2 text-sm font-medium ${
                     isDark ? "hover:bg-slate-800" : "hover:bg-slate-100"
                   }`}

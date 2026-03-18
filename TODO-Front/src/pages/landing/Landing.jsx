@@ -217,7 +217,10 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="workflow" className="mx-auto w-full max-w-6xl px-6 pb-16">
+      <section
+        id="workflow"
+        className="mx-auto scroll-mt-26 w-full max-w-6xl px-6 pb-16"
+      >
         <div
           className={`rounded-3xl border p-8 md:p-10 ${
             isDark
