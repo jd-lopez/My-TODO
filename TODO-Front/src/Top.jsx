@@ -39,7 +39,7 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
           <FontAwesomeIcon icon={isSidebarOpen ? faXmark : faBars} />
         </button>
         <NavLink
-          className=" text-sm md:text-base font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent"
+          className=" text-sm md:text-2xl font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent"
           to="/app"
         >
           TODO
@@ -56,7 +56,8 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
         {showModal && (
           <Fragment>
             <div
-              className={`fixed z-40 ${showModal ? "top-14 bottom-0 left-0 right-0" : ""} ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
+              className={`fixed z-40 ${showModal ? "top-16 md:top-18 bottom-0 left-0 right-0" : ""} ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
+              onClick={() => setShowModal(false)}
             ></div>
             <NewBoard onClose={() => setShowModal(false)} />
           </Fragment>

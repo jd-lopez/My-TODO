@@ -21,7 +21,7 @@ const boardSchema = new mongoose.Schema(
       default: [],
     },
     background: {
-      type: Boolean,
+      type: String,
       default: false,
       required: false,
     },

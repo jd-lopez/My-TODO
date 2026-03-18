@@ -2,14 +2,14 @@ const boardModel = require("../model/boardModel");
 
 exports.createBoard = async (req, res) => {
   try {
-    const { title } = req.body;
+    const { title, background } = req.body;
     const userId = req.user?.id || req.userId?.id || req.userID?.id;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const newBoard = new boardModel({ title, owner: userId });
+    const newBoard = new boardModel({ title, owner: userId, background });
 
     const saved = await newBoard.save();
 
@@ -44,7 +44,10 @@ exports.getBoard = async (req, res) => {
       return res.status(401).json({ message: "No user" });
     }
 
-    const board = await boardModel.findOne({ _id: id, owner: userId });
+    const board = await boardModel.findOne({
+      _id: id,
+      owner: userId,
+    });
 
     return res.status(200).json(board);
   } catch (e) {

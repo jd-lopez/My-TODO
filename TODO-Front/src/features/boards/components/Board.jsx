@@ -3,9 +3,10 @@ import { useEffect, useState } from "react";
 import Dashboard from "../../../pages/Dashboard";
 import { useParams } from "react-router-dom";
 import api from "../../../services/api";
+import ListInput from "./ListInput";
 
 function Board() {
-  const [board, setBoard] = useState(null);
+  const [board, setBoard] = useState();
   const { id } = useParams();
   useEffect(() => {
     async function loadBoard() {
@@ -22,8 +23,11 @@ function Board() {
   }, [id]);
 
   return (
-    <div>
-      <div className="flex justify-between items-center p-4 bg-gray-200">
+    <div
+      className="h-screen bg-cover"
+      style={{ backgroundImage: `url(${board?.background})` }}
+    >
+      <div className="flex justify-between items-center p-4 bg-white/20 backdrop-blur-2xl shadow-md">
         <div>
           <h1>{board?.title}</h1>
         </div>
@@ -46,7 +50,9 @@ function Board() {
         </div>
       </div>
 
-      <Dashboard />
+      <div>
+        <ListInput />
+      </div>
     </div>
   );
 }

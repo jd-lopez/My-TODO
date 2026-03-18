@@ -4,17 +4,23 @@ import api from "../../../services/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../../context/AuthContext";
 import { useTheme } from "../../../context/ThemeContext";
+import { boardBackgrounds } from "../data/boardBackgrounds";
 
 export default function NewBoard({ showModal, onClose }) {
   const [title, setTitle] = useState("");
   const { user } = useAuth();
   const { isDark } = useTheme();
+  const [selectedBackground, setSelectedBackground] = useState("");
 
   const navigate = useNavigate();
 
-  async function createBoard(title) {
+  async function createBoard(title, selectedBackground) {
     try {
-      const res = await api.post("/board", { title, owner: user });
+      const res = await api.post("/board", {
+        title,
+        owner: user,
+        background: selectedBackground,
+      });
       const newBoard = res.data;
       onClose?.();
       navigate(`/app/board/${newBoard._id}`);
@@ -26,12 +32,11 @@ export default function NewBoard({ showModal, onClose }) {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    createBoard(title);
+    createBoard(title, selectedBackground);
   };
 
   return (
-    <div className={`absolute top-17 z-50 right-46 md:top-19 md:right-62 `}>
+    <div className={`absolute top-17 z-50 right-50 md:top-19 md:right-62 `}>
       <dialog
         open
         className={`px-4 py-6 rounded-md ${isDark ? "bg-slate-700 text-white" : ""}`}
@@ -44,6 +49,32 @@ export default function NewBoard({ showModal, onClose }) {
           <h1 className="self-center font-bold bg-linear-to-r from-blue-600 to-cyan-300 bg-clip-text text-transparent ">
             New Board
           </h1>
+          <div>
+            <label htmlFor="">Select a background Image</label>
+            <div className="grid grid-cols-4 gap-1 object-cover">
+              {boardBackgrounds.map((img) => {
+                const isSelected = selectedBackground === img.url;
+
+                return (
+                  <button
+                    className={`rounded-md ${isSelected ? " ring-2 ring-blue-400 scale-105" : ""}`}
+                    key={img.title}
+                    type="button"
+                    onClick={() => {
+                      setSelectedBackground(img.url);
+                      console.log(selectedBackground);
+                    }}
+                  >
+                    <img
+                      src={img.url}
+                      alt={img.title}
+                      className="h-full rounded-md"
+                    />
+                  </button>
+                );
+              })}
+            </div>
+          </div>
 
           <div>
             <label className="text-sm" htmlFor="board-title">

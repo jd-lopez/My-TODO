@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <section
       className={`h-full min-h-0 flex flex-col ${
-        isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"
+        isDark ? "bg-gray-800 text-white" : "bg-slate-50 text-slate-900"
       }`}
     >
       <div className="mx-auto flex w-full min-h-0 flex-1 flex-col px-4 py-8">
@@ -42,7 +42,7 @@ export default function Home() {
                       }}
                     >
                       <img
-                        src="/images/sunset.jpg"
+                        src={board.background}
                         alt=""
                         className="rounded-tl-2xl rounded-tr-2xl h-3/4 object-cover"
                       />

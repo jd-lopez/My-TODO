@@ -15,9 +15,7 @@ export default function PublicLayout() {
 
   return (
     <div
-      className={
-        isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"
-      }
+      className={`overflow-y-auto h-dvh ${isDark ? "bg-slate-950 text-white" : "bg-slate-50 text-slate-900"}`}
     >
       <header
         className={`sticky top-0 z-30 border-b backdrop-blur ${

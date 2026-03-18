@@ -12,7 +12,7 @@ export default function Layout() {
     setIsOpen(!isOpen);
   };
   return (
-    <div className="h-screen flex flex-col overflow-hidden relative">
+    <div className="h-dvh flex flex-col overflow-hidden relative">
       <Top onToggleSidebar={toggleSidebar} isSidebarOpen={isOpen} />
 
       <div className="flex flex-1 min-h-0">
