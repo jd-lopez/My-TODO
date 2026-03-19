@@ -1,6 +1,6 @@
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
-const User = require("../model/userModer");
+const User = require("../model/userModel");
 
 function signToken(userID) {
   // Keep token payload and expiration consistent between register and login.
@@ -22,7 +22,9 @@ exports.register = async (req, res) => {
     if (!normalizedName.first || !normalizedName.last || !email || !password) {
       return res
         .status(400)
-        .json({ message: "First name, last name, email and password are required" });
+        .json({
+          message: "First name, last name, email and password are required",
+        });
     }
 
     const existingUser = await User.findOne({ email });

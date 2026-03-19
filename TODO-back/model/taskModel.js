@@ -9,7 +9,7 @@ const taskSchema = new mongoose.Schema({
   list: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "List",
-    required: false,
+    required: true,
   },
   text: {
     type: String,

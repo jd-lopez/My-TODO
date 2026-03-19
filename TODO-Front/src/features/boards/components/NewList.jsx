@@ -1,34 +1,21 @@
-import React from "react";
 import { useState } from "react";
+import NewTask from "./NewTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "../../../context/ThemeContext";
 import { CreatorForm } from "./CreatorForm";
 
-export default function NewTask({ onCreate }) {
-  const { isDark } = useTheme();
+function ListInput() {
   const [clicked, setClicked] = useState(false);
   const [text, setText] = useState("");
 
-  function submit(e) {
-    e.preventDefault();
-    if (!text.trim()) return;
-    onCreate(text);
-    setText("");
-    setClicked(false);
-  }
-
   return (
-    <div
-      className={`p-1 text-lg gap-3  hover:bg-gray-600 hover:cursor-pointer rounded-md   ${isDark ? "bg-slate-900 text-white" : "bg-white text-black"}`}
-    >
+    <div onClick={() => setClicked(!clicked)}>
       {clicked ? (
         <CreatorForm
           setClicked={setClicked}
           text={text}
           setText={setText}
-          onSubmit={submit}
-          placeholder={"New Task"}
+          placeholder={"New List"}
         />
       ) : (
         <button
@@ -39,9 +26,11 @@ export default function NewTask({ onCreate }) {
             icon={faPlus}
             className="text-blue-700 hover:cursor-pointer"
           />
-          <p>Add a new task</p>
+          <p>Add a list</p>
         </button>
       )}
     </div>
   );
 }
+
+export default ListInput;
