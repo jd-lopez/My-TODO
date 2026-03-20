@@ -1,9 +1,10 @@
 const boardModel = require("../model/boardModel");
+const getUserId = require("../utils/getUser");
 
 exports.createBoard = async (req, res) => {
   try {
     const { title, background } = req.body;
-    const userId = req.user?.id || req.userId?.id || req.userID?.id;
+    const userId = getUserId(req);
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });

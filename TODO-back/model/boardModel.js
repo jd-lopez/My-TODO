@@ -21,6 +21,7 @@ const boardSchema = new mongoose.Schema(
       ref: "User",
       default: [],
     },
+
     background: {
       type: String,
       default: false,

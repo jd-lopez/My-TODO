@@ -1,32 +1,34 @@
 const taskModel = require("../model/taskModel");
-
-function getUserId(req) {
-  // Keep compatibility with the older request field names used earlier in the project.
-  return req.user?.id || req.userId?.id || req.userID?.id;
-}
+const getUserId = require("../utils/getUser");
+// function getUserId(req) {
+//   // Keep compatibility with the older request field names used earlier in the project.
+//   return req.user?.id || req.userId?.id || req.userID?.id;
+// }
 
 exports.createTask = async (req, res) => {
   try {
-    const { text } = req.body;
+    const { title } = req.body;
     const userId = getUserId(req);
+    const { boardId, listId } = req.params;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    if (!text) {
-      return res.status(400).json({ message: "Task text is required" });
+    if (!title) {
+      return res.status(400).json({ message: "Task title is required" });
     }
 
     const lastTask = await taskModel
-      .findOne({ user: userId })
+      .findOne({ user: userId, board: boardId, list: listId })
       .sort({ order: -1 });
     const nextOrder = lastTask ? lastTask.order + 1 : 0;
 
     const newTask = new taskModel({
-      text,
-
       user: userId,
+      board: boardId,
+      list: listId,
+      title,
     });
     const saved = await newTask.save();
 
@@ -39,12 +41,15 @@ exports.createTask = async (req, res) => {
 exports.getAllTasks = async (req, res) => {
   try {
     const userId = getUserId(req);
+    const { boardId, listId } = req.params;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const tasks = await taskModel.find({ user: userId }).sort({ order: 1 });
+    const tasks = await taskModel
+      .find({ user: userId, board: boardId, list: listId })
+      .sort({ order: 1 });
     return res.status(200).json(tasks);
   } catch (error) {
     return res.status(500).json({ message: "Server error" });

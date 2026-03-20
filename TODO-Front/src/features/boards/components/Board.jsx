@@ -1,19 +1,14 @@
-import React from "react";
 import { useEffect, useState } from "react";
-import Dashboard from "../../../pages/Dashboard";
 import { useParams } from "react-router-dom";
 import api from "../../../services/api";
-import ListInput from "./NewList";
 import BoardHeader from "./BoardHeader";
 import NewList from "./NewList";
-import NewTask from "./NewTask";
 import List from "./List";
-import { useTheme } from "../../../context/ThemeContext";
 
 function Board() {
   const [board, setBoard] = useState();
   const [tasks, setTasks] = useState([]);
-  const { isDark } = useTheme();
+  const [lists, setLists] = useState([]);
   const { id } = useParams();
 
   useEffect(() => {
@@ -31,14 +26,55 @@ function Board() {
   }, [id]);
 
   useEffect(() => {
-    api.get("/tasks").then((res) => {
-      setTasks(res.data);
-    });
-  }, []);
+    async function loadLists() {
+      try {
+        const res = await api.get(`/board/${id}/lists`);
+        setLists(res.data);
+      } catch (error) {
+        console.error(error);
+      }
+    }
 
-  async function createTask(text) {
+    loadLists();
+  }, [id]);
+
+  useEffect(() => {
+    async function loadTasks() {
+      if (lists.length === 0) {
+        setTasks([]);
+        return;
+      }
+
+      try {
+        const responses = await Promise.all(
+          lists.map((list) => api.get(`/board/${id}/lists/${list._id}/tasks`)),
+        );
+        setTasks(responses.flatMap((response) => response.data));
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
+    loadTasks();
+  }, [id, lists]);
+
+  async function createList(title) {
     try {
-      const res = await api.post("/tasks", { text });
+      const res = await api.post(`/board/${id}/lists`, {
+        title,
+      });
+      const newList = res.data;
+      setLists((prev) => [...prev, newList]);
+    } catch (err) {
+      throw new Error("This is the error", err.message);
+    }
+  }
+
+  async function createTask(title, listId) {
+    try {
+      const res = await api.post(`/board/${id}/lists/${listId}/tasks`, {
+        title,
+      });
       const newTask = res.data;
       setTasks((prev) => [...prev, newTask]);
     } catch (err) {
@@ -76,9 +112,21 @@ function Board() {
       style={{ backgroundImage: `url(${board?.background})` }}
     >
       <BoardHeader title={board?.title} />
-      <div id="board-canvas" className="flex items-start">
-        <List tasks={tasks} onCreate={createTask} />
-        <NewList tasks={tasks} />
+      <div
+        id="board-canvas"
+        className="flex items-start gap-3 p-4 overflow-x-auto h-screen"
+      >
+        {lists.map((list) => {
+          return (
+            <List
+              key={list._id}
+              onCreate={(title) => createTask(title, list._id)}
+              tasks={tasks.filter((task) => String(task.list) === list._id)}
+              list={list}
+            />
+          );
+        })}
+        <NewList onCreate={createList} />
       </div>
     </div>
   );

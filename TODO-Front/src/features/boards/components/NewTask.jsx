@@ -8,15 +8,7 @@ import { CreatorForm } from "./CreatorForm";
 export default function NewTask({ onCreate }) {
   const { isDark } = useTheme();
   const [clicked, setClicked] = useState(false);
-  const [text, setText] = useState("");
-
-  function submit(e) {
-    e.preventDefault();
-    if (!text.trim()) return;
-    onCreate(text);
-    setText("");
-    setClicked(false);
-  }
+  const [title, setTitle] = useState("");
 
   return (
     <div
@@ -25,10 +17,10 @@ export default function NewTask({ onCreate }) {
       {clicked ? (
         <CreatorForm
           setClicked={setClicked}
-          text={text}
-          setText={setText}
-          onSubmit={submit}
+          title={title}
+          setTitle={setTitle}
           placeholder={"New Task"}
+          onCreate={onCreate}
         />
       ) : (
         <button

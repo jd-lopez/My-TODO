@@ -5,6 +5,7 @@ require("dotenv").config();
 const taskController = require("./controller/taskController");
 const authController = require("./controller/authController");
 const boardController = require("./controller/boardController");
+const listController = require("./controller/listController");
 const authMiddleware = require("./middleware/auth");
 
 const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "CLIENT_URL"];
@@ -53,13 +54,24 @@ app.use(express.json());
 app.get("/", (req, res) => {
   res.send("API is running");
 });
-app.get("/tasks", authMiddleware, taskController.getAllTasks);
 app.get("/boards", authMiddleware, boardController.getAllBoards);
-app.post("/tasks", authMiddleware, taskController.createTask);
 app.post("/board", authMiddleware, boardController.createBoard);
 app.delete("/tasks/:id", authMiddleware, taskController.deleteTask);
 app.patch("/tasks/:id", authMiddleware, taskController.markComplete);
 app.get("/board/:id", authMiddleware, boardController.getBoard);
+app.post("/board/:id/lists", authMiddleware, listController.createList);
+app.get("/board/:id/lists", authMiddleware, listController.getAllList);
+app.post(
+  "/board/:boardId/lists/:listId/tasks",
+  authMiddleware,
+  taskController.createTask,
+);
+
+app.get(
+  "/board/:boardId/lists/:listId/tasks",
+  authMiddleware,
+  taskController.getAllTasks,
+);
 app.post("/login", authController.login);
 app.post("/register", authController.register);
 

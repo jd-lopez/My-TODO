@@ -2,22 +2,30 @@ import React from "react";
 
 export function CreatorForm({
   setClicked,
-  text,
-  setText,
-  onSubmit,
+  title,
+  setTitle,
   placeholder,
+  onCreate,
 }) {
+  function submit(e) {
+    e.preventDefault();
+    if (!title.trim()) return;
+    onCreate(title);
+    setTitle("");
+    setClicked(false);
+  }
+
   return (
     <form
       className="flex flex-col gap-2"
       onClick={(e) => e.stopPropagation()}
-      onSubmit={onSubmit}
+      onSubmit={submit}
     >
       <input
         type="text"
         placeholder={placeholder}
-        value={text}
-        onChange={(e) => setText(e.target.value)}
+        value={title}
+        onChange={(e) => setTitle(e.target.value)}
         className="p-1 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent"
       />
       <div>
@@ -33,7 +41,7 @@ export function CreatorForm({
           type="button"
           onClick={() => {
             setClicked(false);
-            setText("");
+            setTitle("");
           }}
         >
           Cancel

@@ -1,21 +1,21 @@
 import { useState } from "react";
-import NewTask from "./NewTask";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 import { CreatorForm } from "./CreatorForm";
 
-function ListInput() {
+function NewList({ onCreate }) {
   const [clicked, setClicked] = useState(false);
-  const [text, setText] = useState("");
+  const [title, setTitle] = useState("");
 
   return (
     <div onClick={() => setClicked(!clicked)}>
       {clicked ? (
         <CreatorForm
           setClicked={setClicked}
-          text={text}
-          setText={setText}
+          title={title}
+          setTitle={setTitle}
           placeholder={"New List"}
+          onCreate={onCreate}
         />
       ) : (
         <button
@@ -33,4 +33,4 @@ function ListInput() {
   );
 }
 
-export default ListInput;
+export default NewList;

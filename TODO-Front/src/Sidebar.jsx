@@ -55,7 +55,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
               </li>
               <li>
                 <NavLink
-                  to="/app/dashboard"
+                  to="#"
                   onClick={toggleSidebar}
                   className={({ isActive }) =>
                     `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
@@ -67,7 +67,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                     }`
                   }
                 >
-                  <span>Dashboard</span>
+                  <span>Members</span>
                   <FontAwesomeIcon icon={faDashboard} />
                 </NavLink>
               </li>
@@ -138,7 +138,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
                 }`
               }
             >
-              {isOpen && <span className="whitespace-nowrap">Dashboard</span>}
+              {isOpen && <span className="whitespace-nowrap">Members</span>}
               <FontAwesomeIcon icon={faDashboard} />
             </NavLink>
           </li>

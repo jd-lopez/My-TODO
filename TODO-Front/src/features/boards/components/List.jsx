@@ -9,25 +9,21 @@ import TasksContainer from "./TasksContainer";
 import { useTheme } from "../../../context/ThemeContext";
 import NewTask from "./NewTask";
 
-function List({ tasks, onCreate }) {
+function List({ tasks, onCreate, list }) {
   const { isDark } = useTheme();
   let isEmpty = tasks.length === 0;
 
   return (
     <div
-      className={`min-h-0 flex flex-col gap-2 rounded-md p-2 min-w-60 ${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} `}
+      className={`min-h-0 flex flex-col gap-1 rounded-md p-2 min-w-68 ${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} `}
     >
-      <h1>Title</h1>
+      <h1>{list.title}</h1>
 
       <div className=" max-h-60 overflow-y-auto rounded-md text-sm">
         {isEmpty ? (
-          <div
-            className={` ${isDark ? "text-white bg-slate-700" : "text-black bg-gray-200"} p-2 rounded-md`}
-          >
-            Nothing Here
-          </div>
+          ""
         ) : (
-          <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 p-2">
             {tasks.map((task) => {
               return (
                 <div
@@ -43,7 +39,7 @@ function List({ tasks, onCreate }) {
                   <h1
                     className={`transition-all delay-100 ${task.completed ? "line-through text-gray-400" : ""}`}
                   >
-                    {task.text}
+                    {task.title ?? task.text}
                   </h1>
                   <div className="flex justify-between items-center gap-4 ml-auto ">
                     <img

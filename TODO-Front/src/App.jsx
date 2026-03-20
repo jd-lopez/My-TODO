@@ -42,7 +42,6 @@ function App() {
           }
         >
           <Route index element={<Home />} />
-          <Route path="dashboard" element={<Dashboard />} />
           <Route path="board/:id" element={<Board />} />
         </Route>
 
