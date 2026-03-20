@@ -55,7 +55,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
               </li>
               <li>
                 <NavLink
-                  to="#"
+                  to="/app/dashboard"
                   onClick={toggleSidebar}
                   className={({ isActive }) =>
                     `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
