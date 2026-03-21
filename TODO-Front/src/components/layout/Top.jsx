@@ -1,15 +1,16 @@
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { useTheme } from "./context/ThemeContext";
-import { faMoon } from "@fortawesome/free-solid-svg-icons";
-import { faSun } from "@fortawesome/free-solid-svg-icons";
-import { faBars } from "@fortawesome/free-solid-svg-icons";
-import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { Fragment, useState } from "react";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "./context/AuthContext";
-import { faSignOut } from "@fortawesome/free-solid-svg-icons";
-import { useState } from "react";
-import NewBoard from "./features/boards/components/NewBoard";
-import { Fragment } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faBars,
+  faMoon,
+  faSignOut,
+  faSun,
+  faXmark,
+} from "@fortawesome/free-solid-svg-icons";
+import { useTheme } from "../../context/ThemeContext";
+import { useAuth } from "../../context/AuthContext";
+import NewBoard from "../../features/boards/components/NewBoard";
 
 function Top({ onToggleSidebar, isSidebarOpen }) {
   const [showModal, setShowModal] = useState(false);
@@ -39,7 +40,7 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
           <FontAwesomeIcon icon={isSidebarOpen ? faXmark : faBars} />
         </button>
         <NavLink
-          className=" text-sm md:text-2xl font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent"
+          className="text-2xl font-bold bg-linear-to-r from-blue-800 to-cyan-300 bg-clip-text text-transparent"
           to="/app"
         >
           TODO

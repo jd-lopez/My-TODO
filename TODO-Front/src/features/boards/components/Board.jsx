@@ -114,7 +114,7 @@ function Board() {
       <BoardHeader title={board?.title} />
       <div
         id="board-canvas"
-        className="flex items-start gap-3 p-4 overflow-x-auto h-screen"
+        className="flex items-start gap-3 p-4 overflow-x-auto h-108"
       >
         {lists.map((list) => {
           return (
@@ -123,6 +123,7 @@ function Board() {
               onCreate={(title) => createTask(title, list._id)}
               tasks={tasks.filter((task) => String(task.list) === list._id)}
               list={list}
+              board={board}
             />
           );
         })}

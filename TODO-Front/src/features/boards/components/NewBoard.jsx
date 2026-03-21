@@ -6,7 +6,7 @@ import { useAuth } from "../../../context/AuthContext";
 import { useTheme } from "../../../context/ThemeContext";
 import { boardBackgrounds } from "../data/boardBackgrounds";
 
-export default function NewBoard({ showModal, onClose }) {
+export default function NewBoard({ onClose }) {
   const [title, setTitle] = useState("");
   const { user } = useAuth();
   const { isDark } = useTheme();
@@ -36,7 +36,7 @@ export default function NewBoard({ showModal, onClose }) {
   };
 
   return (
-    <div className={`absolute top-17 z-50 right-50 md:top-19 md:right-62 `}>
+    <div className={`absolute top-17 z-50 right-56 md:top-19 md:right-62 `}>
       <dialog
         open
         className={`px-4 py-6 rounded-md ${isDark ? "bg-slate-700 text-white" : ""}`}

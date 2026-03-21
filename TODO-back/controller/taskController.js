@@ -29,6 +29,7 @@ exports.createTask = async (req, res) => {
       board: boardId,
       list: listId,
       title,
+      order: nextOrder,
     });
     const saved = await newTask.save();
 

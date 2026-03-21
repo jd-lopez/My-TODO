@@ -3,7 +3,7 @@ import React from "react";
 export default function BoardHeader({ title }) {
   return (
     <div>
-      <div className="flex justify-between items-center p-4 bg-white/20 backdrop-blur-2xl shadow-md">
+      <div className="flex justify-between items-center p-4 bg-gray-400/20 backdrop-blur-2xl shadow-md">
         <div>
           <h1>{title}</h1>
         </div>

@@ -1,7 +1,7 @@
 import { Outlet } from "react-router-dom";
-import Top from "../Top";
+import Top from "../components/layout/Top";
 import { useTheme } from "../context/ThemeContext";
-import Sidebar from "../Sidebar";
+import Sidebar from "../components/layout/Sidebar";
 import { useState } from "react";
 
 export default function Layout() {

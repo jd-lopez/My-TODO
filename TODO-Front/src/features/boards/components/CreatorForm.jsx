@@ -17,7 +17,7 @@ export function CreatorForm({
 
   return (
     <form
-      className="flex flex-col gap-2"
+      className="flex flex-col gap-2 text-white"
       onClick={(e) => e.stopPropagation()}
       onSubmit={submit}
     >
@@ -26,7 +26,7 @@ export function CreatorForm({
         placeholder={placeholder}
         value={title}
         onChange={(e) => setTitle(e.target.value)}
-        className="p-1 rounded-md border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent"
+        className="p-1 rounded-md border bg-gray-400/10 backdrop-blur-lg border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-700 focus:border-transparent"
       />
       <div>
         <button

@@ -19,7 +19,7 @@ function NewList({ onCreate }) {
         />
       ) : (
         <button
-          className="flex items-center gap-2 hover:cursor-pointer"
+          className="flex  items-center gap-2 hover:cursor-pointer bg-gray-400/10 backdrop-blur-lg px-2 py-1 min-w-60 rounded-md"
           onClick={() => setClicked(true)}
         >
           <FontAwesomeIcon

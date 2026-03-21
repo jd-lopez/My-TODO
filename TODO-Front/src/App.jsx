@@ -8,7 +8,7 @@ import SignUp from "./pages/signup/SingUp";
 import Landing from "./pages/landing/Landing";
 import PublicLayout from "./layouts/PublicLayout";
 import { useAuth } from "./context/AuthContext";
-import ProtectedRoute from "./ProtectedRoutes";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import Board from "./features/boards/components/Board";
 
 function App() {

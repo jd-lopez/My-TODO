@@ -18,7 +18,7 @@ export default function Home() {
   return (
     <section
       className={`h-full min-h-0 flex flex-col ${
-        isDark ? "bg-gray-800 text-white" : "bg-slate-50 text-slate-900"
+        isDark ? "bg-gray-800 text-white" : "bg-slate-100 text-slate-900"
       }`}
     >
       <div className="mx-auto flex w-full min-h-0 flex-1 flex-col px-4 py-4">
