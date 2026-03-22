@@ -44,9 +44,15 @@ export default function PublicLayout() {
             </a>
             <a
               href="/#workflow"
-              className={`text-sm font-medium ${
-                isDark ? "text-slate-200" : "text-slate-700"
-              }`}
+              className={({ isActive }) =>
+                ` text-sm font-medium ${
+                  isActive
+                    ? "bg-red-600"
+                    : isDark
+                      ? "text-slate-200"
+                      : "text-slate-700"
+                }`
+              }
             >
               Workflow
             </a>

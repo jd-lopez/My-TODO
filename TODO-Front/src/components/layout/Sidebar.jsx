@@ -111,7 +111,7 @@ function Sidebar({ isOpen, toggleSidebar }) {
         >
           {isOpen ? "Collapse" : "Expand"}
         </button>
-        <ul className="flex flex-col gap-6 text-base">
+        <ul className="flex flex-col justify-between gap-6 text-base w-full">
           <li>
             <NavLink
               to="/app"
@@ -149,12 +149,12 @@ function Sidebar({ isOpen, toggleSidebar }) {
           </li>
         </ul>
 
-        <button className="mt-auto">
+        <button className="mt-auto w-full">
           <NavLink
             to="/login"
             onClick={handleLogout}
             className={({ isActive }) =>
-              `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
+              `flex items-center justify-between gap-2  rounded-md px-3 py-2 ${
                 isActive
                   ? "bg-blue-500 text-white"
                   : isDark

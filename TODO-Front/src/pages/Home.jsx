@@ -1,6 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useTheme } from "../context/ThemeContext";
 import { useEffect, useState } from "react";
+import { motion } from "motion/react";
 import api from "../services/api";
 
 export default function Home() {
@@ -28,18 +29,26 @@ export default function Home() {
 
         {/*Board list container */}
         <div className="flex-1 min-h-0 overflow-y-auto pr-1">
-          <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 xl:grid-cols-4">
+          <div className="grid grid-cols-1 gap-4 md:grid-cols-4 xl:grid-cols-4 p-4">
             {boards.length > 0 ? (
               <>
                 {boards.map((board) => {
                   return (
-                    <div
+                    <motion.div
                       to="/app/board"
                       className={`flex flex-col rounded-2xl shadow-sm justify-between h-46 ${isDark ? "bg-gray-500 text-white" : ""}`}
                       key={board._id}
                       onClick={() => {
                         navigate(`/app/board/${board._id}`);
                       }}
+                      initial={{ scale: 0, opacity: 0 }}
+                      animate={{ scale: 1, opacity: 1 }}
+                      whileHover={{
+                        y: -4,
+                        scale: 1.1,
+                        boxShadow: "0 0 10px 2px lightblue",
+                      }}
+                      transition={{ duration: 0.2, ease: "easeOut" }}
                     >
                       <img
                         src={board.background}
@@ -49,7 +58,7 @@ export default function Home() {
                       <h2 className="text-lg font-semibold p-2">
                         {board.title}
                       </h2>
-                    </div>
+                    </motion.div>
                   );
                 })}
               </>

@@ -154,7 +154,10 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="features" className="mx-auto w-full max-w-6xl px-6 py-16">
+      <section
+        id="features"
+        className="mx-auto w-full max-w-6xl scroll-mt-26 px-6 py-16"
+      >
         <div className="mb-10">
           <h2 className="text-3xl font-bold md:text-4xl">
             Designed for focused execution
@@ -217,6 +220,50 @@ export default function Landing() {
         </div>
       </section>
 
+      <section className="mx-auto w-full max-w-6xl px-6 pb-16">
+        <div
+          className={`grid gap-4 rounded-3xl border p-6 md:grid-cols-4 md:p-8 ${
+            isDark
+              ? "border-slate-700 bg-slate-900"
+              : "border-slate-200 bg-white"
+          }`}
+        >
+          <div>
+            <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+              Why teams adopt it
+            </p>
+            <h3 className="mt-2 text-2xl font-bold">A workflow that stays clear</h3>
+          </div>
+          <div>
+            <p className="text-3xl font-bold">1 board</p>
+            <p
+              className={`mt-2 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              Keep strategy, execution, and review tied together in one visible
+              space instead of scattered tools.
+            </p>
+          </div>
+          <div>
+            <p className="text-3xl font-bold">3 layers</p>
+            <p
+              className={`mt-2 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              Boards, lists, and task cards give structure without forcing a
+              heavy process on the team.
+            </p>
+          </div>
+          <div>
+            <p className="text-3xl font-bold">Fast context</p>
+            <p
+              className={`mt-2 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              Review what is blocked, in motion, or finished in seconds instead
+              of hunting through updates.
+            </p>
+          </div>
+        </div>
+      </section>
+
       <section
         id="workflow"
         className="mx-auto scroll-mt-26 w-full max-w-6xl px-6 pb-16"
@@ -270,7 +317,84 @@ export default function Landing() {
         </div>
       </section>
 
-      <section id="get-started" className="mx-auto w-full max-w-6xl px-6 pb-20">
+      <section className="mx-auto w-full max-w-6xl px-6 pb-16">
+        <div className="mb-10">
+          <h2 className="text-3xl font-bold md:text-4xl">
+            Flexible enough for personal focus and internal team use
+          </h2>
+          <p
+            className={`mt-3 max-w-3xl ${isDark ? "text-slate-300" : "text-slate-600"}`}
+          >
+            Start with a personal board to manage your own priorities, then
+            expand the same structure into shared boards for projects, team
+            workflows, and internal execution visibility.
+          </p>
+        </div>
+
+        <div className="grid gap-4 md:grid-cols-3">
+          <article
+            className={`rounded-2xl border p-6 ${
+              isDark
+                ? "border-slate-700 bg-slate-900"
+                : "border-slate-200 bg-white"
+            }`}
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+              Personal Use
+            </p>
+            <h3 className="mt-2 text-xl font-semibold">Stay on top of daily work</h3>
+            <p
+              className={`mt-3 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              Keep your own task flow simple, visible, and easy to maintain as
+              priorities shift during the week.
+            </p>
+          </article>
+
+          <article
+            className={`rounded-2xl border p-6 ${
+              isDark
+                ? "border-slate-700 bg-slate-900"
+                : "border-slate-200 bg-white"
+            }`}
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+              Shared Boards
+            </p>
+            <h3 className="mt-2 text-xl font-semibold">Coordinate with less friction</h3>
+            <p
+              className={`mt-3 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              Let teammates understand current work, ownership, and next actions
+              without needing a meeting for every status update.
+            </p>
+          </article>
+
+          <article
+            className={`rounded-2xl border p-6 ${
+              isDark
+                ? "border-slate-700 bg-slate-900"
+                : "border-slate-200 bg-white"
+            }`}
+          >
+            <p className="text-xs font-semibold uppercase tracking-wide text-blue-600">
+              Leadership View
+            </p>
+            <h3 className="mt-2 text-xl font-semibold">See progress without micromanaging</h3>
+            <p
+              className={`mt-3 text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              Understand what is moving, what needs attention, and where work is
+              stuck while the team keeps executing.
+            </p>
+          </article>
+        </div>
+      </section>
+
+      <section
+        id="get-started"
+        className="mx-auto w-full max-w-6xl scroll-mt-26 px-6 pb-20"
+      >
         <div
           className={`rounded-3xl border p-8 text-center md:p-12 ${
             isDark
@@ -307,6 +431,71 @@ export default function Landing() {
           </div>
         </div>
       </section>
+
+      <footer
+        className={`border-t ${
+          isDark ? "border-slate-800 bg-slate-950" : "border-slate-200 bg-white"
+        }`}
+      >
+        <div className="mx-auto grid w-full max-w-6xl gap-10 px-6 py-12 md:grid-cols-4">
+          <div className="md:col-span-2">
+            <h2 className="text-xl font-bold">TODO FLOW</h2>
+            <p
+              className={`mt-3 max-w-xl text-sm ${isDark ? "text-slate-300" : "text-slate-600"}`}
+            >
+              A clean task workspace built around boards, lists, and task cards
+              so individuals and teams can move from planning to delivery with
+              less friction.
+            </p>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-blue-600">
+              Navigation
+            </h3>
+            <div className="mt-4 flex flex-col gap-3 text-sm">
+              <a href="#features" className={isDark ? "text-slate-200" : "text-slate-700"}>
+                Features
+              </a>
+              <a href="#workflow" className={isDark ? "text-slate-200" : "text-slate-700"}>
+                Workflow
+              </a>
+              <a href="#get-started" className={isDark ? "text-slate-200" : "text-slate-700"}>
+                Get Started
+              </a>
+            </div>
+          </div>
+
+          <div>
+            <h3 className="text-sm font-semibold uppercase tracking-wide text-blue-600">
+              Account
+            </h3>
+            <div className="mt-4 flex flex-col gap-3 text-sm">
+              <Link to="/login" className={isDark ? "text-slate-200" : "text-slate-700"}>
+                Log In
+              </Link>
+              <Link to="/signup" className={isDark ? "text-slate-200" : "text-slate-700"}>
+                Create Account
+              </Link>
+            </div>
+          </div>
+        </div>
+
+        <div
+          className={`border-t ${
+            isDark ? "border-slate-800" : "border-slate-200"
+          }`}
+        >
+          <div className="mx-auto flex w-full max-w-6xl flex-col gap-2 px-6 py-4 text-sm md:flex-row md:items-center md:justify-between">
+            <p className={isDark ? "text-slate-400" : "text-slate-500"}>
+              (c) 2026 TODO FLOW. A steadier way to organize work.
+            </p>
+            <p className={isDark ? "text-slate-400" : "text-slate-500"}>
+              Personal focus, team visibility, and clear execution in one flow.
+            </p>
+          </div>
+        </div>
+      </footer>
     </div>
   );
 }

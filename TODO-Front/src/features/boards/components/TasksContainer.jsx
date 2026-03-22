@@ -1,5 +1,7 @@
 import { useState } from "react";
 import TaskModal from "./TaskModal";
+import { AnimatePresence } from "motion/react";
+import { motion } from "motion/react";
 import crossIcon from "../../../assets/icon-cross.svg";
 import crossIconDark from "../../../assets/icon_cross_dark.svg";
 import edit from "../../../assets/pencil.svg";
@@ -22,13 +24,17 @@ function TasksContainer({ tasks, list, board }) {
         <div className="flex flex-col gap-2 p-2">
           {tasks.map((task) => {
             return (
-              <div
+              <motion.div
                 key={task._id}
                 className={`group flex items-center justify-between gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-102 hover:cursor-pointer ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
                 onClick={() => {
-                  setTaskModal(!taskModal);
                   setCurrentTask(task);
+                  setTaskModal(true);
                 }}
+                layout
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.2 }}
               >
                 <button
                   onClick={(e) => e.stopPropagation()}
@@ -58,26 +64,33 @@ function TasksContainer({ tasks, list, board }) {
                     />
                   </button>
                 </div>
-              </div>
+              </motion.div>
             );
           })}
         </div>
       )}
 
-      {taskModal && (
-        <>
-          <div
-            className={`fixed z-40 ${taskModal ? "top-0 md:top-0 bottom-0 left-0 right-0" : ""} ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
-            onClick={() => setTaskModal(false)}
-          ></div>
-          <TaskModal
-            onClose={() => setTaskModal(false)}
-            task={currentTask}
-            list={list}
-            board={board}
-          />
-        </>
-      )}
+      <AnimatePresence>
+        {taskModal && currentTask && (
+          <>
+            <motion.div
+              key="task-backdrop"
+              className={`fixed z-40 top-0 bottom-0 left-0 right-0 ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              onClick={() => setTaskModal(false)}
+            />
+            <TaskModal
+              onClose={() => setTaskModal(false)}
+              task={currentTask}
+              list={list}
+              board={board}
+            />
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

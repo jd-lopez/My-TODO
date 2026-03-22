@@ -2,13 +2,18 @@ import React from "react";
 import { useTheme } from "../../../context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark } from "@fortawesome/free-solid-svg-icons";
+import { motion } from "motion/react";
 
 function TaskModal({ onClose, task, list, board }) {
   const { isDark } = useTheme();
 
   return (
-    <div
-      className={`absolute top-17 z-50 left-5 right-5 md:top-19 md:left-34 md:right-24  md:w-5xl`}
+    <motion.div
+      className="fixed top-17 z-50 left-5 right-5 md:top-19 md:left-34 md:right-24 md:w-5xl"
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.24, ease: "easeOut" }}
     >
       <dialog
         open
@@ -21,7 +26,7 @@ function TaskModal({ onClose, task, list, board }) {
             <h1 className="text-sm text-gray-400">in {list.title}</h1>
           </div>
           <div>
-            <FontAwesomeIcon icon={faXmark} onClick={() => onClose(false)} />
+            <FontAwesomeIcon icon={faXmark} onClick={onClose} />
           </div>
         </div>
 
@@ -44,7 +49,7 @@ function TaskModal({ onClose, task, list, board }) {
           </div>
         </div>
       </dialog>
-    </div>
+    </motion.div>
   );
 }
 

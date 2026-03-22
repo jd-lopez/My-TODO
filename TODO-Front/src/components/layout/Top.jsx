@@ -95,12 +95,24 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
 
         {isAuthenticated ? (
           <button
+            id="user-account"
             type="button"
-            className={`inline-flex h-10 w-10 items-center justify-center rounded-full border text-xs font-bold ${
+            className={`relative  isolate inline-flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold ${
               isDark
-                ? "border-slate-600 bg-slate-800 text-white hover:darkShadow"
-                : "border-gray-300 bg-gray-100 text-slate-900 hover:lightShadow"
+                ? "text-white hover:darkShadow"
+                : "text-slate-900 hover:lightShadow"
             }`}
+            style={{
+              "--user-account-fill": isDark
+                ? "rgb(30, 41, 59)"
+                : "rgb(243, 244, 246)",
+              "--user-account-start": isDark
+                ? "rgb(157, 199, 251)"
+                : "rgb(255, 249, 255)",
+              "--user-account-end": isDark
+                ? "rgb(0, 13, 107)"
+                : "rgb(5, 3, 255)",
+            }}
             aria-label={
               user?.name
                 ? `${user.name.first} ${user.name.last}`.trim()
@@ -112,7 +124,7 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
                 : "User initials"
             }
           >
-            {initials || "U"}
+            <span className="relative z-10">{initials || "U"}</span>
           </button>
         ) : null}
       </div>

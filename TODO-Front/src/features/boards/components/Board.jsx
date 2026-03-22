@@ -4,6 +4,7 @@ import api from "../../../services/api";
 import BoardHeader from "./BoardHeader";
 import NewList from "./NewList";
 import List from "./List";
+import { motion } from "motion/react";
 
 function Board() {
   const [board, setBoard] = useState();
