@@ -79,7 +79,7 @@ exports.deleteTask = async (req, res) => {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    return res.status(200).json({ id: deleted._id });
+    return res.status(200).json({ taskId: deleted._id });
   } catch (error) {
     return res.status(500).json({ message: "Server error" });
   }
@@ -88,34 +88,19 @@ exports.deleteTask = async (req, res) => {
 exports.markComplete = async (req, res) => {
   try {
     const userId = getUserId(req);
-    const { id } = req.params;
+    const { boardId, listId, taskId } = req.params;
     const { status } = req.body || {};
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    if (status) {
-      const allowedStatus = ["todo", "doing", "done"];
-      if (!allowedStatus.includes(status)) {
-        return res.status(400).json({ message: "Invalid status value" });
-      }
-
-      // The same endpoint handles moving a task between columns when a status is provided.
-      const updated = await taskModel.findOneAndUpdate(
-        { _id: id, user: userId },
-        { $set: { status } },
-        { new: true },
-      );
-
-      if (!updated) {
-        return res.status(404).json({ message: "Task not found" });
-      }
-
-      return res.status(200).json(updated);
-    }
-
-    const task = await taskModel.findOne({ _id: id, user: userId });
+    const task = await taskModel.findOne({
+      board: boardId,
+      list: listId,
+      _id: taskId,
+      user: userId,
+    });
     if (!task) {
       return res.status(404).json({ message: "Task not found" });
     }

@@ -10,7 +10,7 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-function TasksContainer({ tasks, list, board, onDelete }) {
+function TasksContainer({ tasks, list, board, onDelete, onComplete }) {
   const { isDark } = useTheme();
   const [taskModal, setTaskModal] = useState(false);
   const [currentTask, setCurrentTask] = useState();
@@ -23,48 +23,57 @@ function TasksContainer({ tasks, list, board, onDelete }) {
         ""
       ) : (
         <div className="flex flex-col gap-2 p-2">
-          {tasks.map((task) => {
-            return (
-              <motion.div
-                key={task._id}
-                className={`group flex items-center justify-between gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-102 hover:cursor-pointer ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
-                onClick={() => {
-                  setCurrentTask(task);
-                  setTaskModal(true);
-                }}
-                layout
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.2 }}
-              >
-                <button
-                  onClick={(e) => e.stopPropagation()}
-                  className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200  ${isDark ? "border-white" : "border-purple-600"}
-                      ${task.completed ? "bg-blue-500 grid" : "bg-white hidden"}`}
+          <AnimatePresence>
+            {tasks.map((task) => {
+              return (
+                <motion.div
+                  key={task._id}
+                  className={`group overflow-hidden flex items-center justify-between gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-102 hover:cursor-pointer ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
+                  onClick={() => {
+                    setCurrentTask(task);
+                    setTaskModal(true);
+                  }}
+                  layout
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, height: 0, marginBottom: 0 }}
+                  transition={{ duration: 0.2, ease: "easeOut" }}
                 >
-                  {task.completed && <FontAwesomeIcon icon={faCircleCheck} />}
-                </button>{" "}
-                <h1
-                  className={`transition-all w-44 text-justify delay-100 ${task.completed ? "line-through text-gray-400" : ""}`}
-                >
-                  {task.title ?? task.text}
-                </h1>
-                <div className="flex justify-end items-center gap-2  w-14 ">
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      onDelete(board._id, list._id, task._id);
+                      onComplete(board._id, list._id, task._id);
                     }}
+                    className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200  ${isDark ? "border-white" : "border-purple-600"}
+                      ${task.completed ? " grid" : " hidden"}`}
                   >
-                    <FontAwesomeIcon icon={faXmark} />
-                  </button>
-                  <button onClick={(e) => e.stopPropagation()}>
-                    <FontAwesomeIcon icon={faPencil} />
-                  </button>
-                </div>
-              </motion.div>
-            );
-          })}
+                    {task.completed && <FontAwesomeIcon icon={faCircleCheck} />}
+                  </button>{" "}
+                  <h1
+                    className={`transition-all w-44 text-justify delay-100 ${task.completed ? "line-through text-gray-400" : ""}`}
+                  >
+                    {task.title ?? task.text}
+                  </h1>
+                  <div className="flex justify-end items-center gap-2  w-14 ">
+                    <button
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        onDelete(board._id, list._id, task._id);
+                      }}
+                    >
+                      <FontAwesomeIcon icon={faXmark} />
+                    </button>
+                    <button
+                      onClick={(e) => e.stopPropagation()}
+                      className={`${task.completed ? "hidden" : "block"}`}
+                    >
+                      <FontAwesomeIcon icon={faPencil} />
+                    </button>
+                  </div>
+                </motion.div>
+              );
+            })}
+          </AnimatePresence>
         </div>
       )}
 

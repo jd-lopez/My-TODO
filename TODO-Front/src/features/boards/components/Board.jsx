@@ -83,19 +83,20 @@ function Board() {
     }
   }
 
-  async function deleteTask(id, listId, taskId) {
-    await api.delete(`board/${id}/list/${listId}/task/${taskId}`);
+  async function deleteTask(boardId, listId, taskId) {
+    await api.delete(`boards/${boardId}/lists/${listId}/tasks/${taskId}`);
+    setTasks((prev) => prev.filter((task) => task._id !== taskId));
   }
 
-  async function markComplete(id) {
+  async function markComplete(boardId, listId, taskId) {
     setTasks((prev) =>
       prev.map((task) =>
-        task._id === id ? { ...task, completed: !task.completed } : task,
+        task._id === taskId ? { ...task, completed: !task.completed } : task,
       ),
     );
 
     try {
-      await api.patch(`/tasks/${id}`);
+      await api.patch(`boards/${boardId}/lists/${listId}/tasks/${taskId}`);
     } catch (err) {
       console.error(err);
     }
@@ -125,6 +126,7 @@ function Board() {
               list={list}
               board={board}
               onDelete={deleteTask}
+              onComplete={markComplete}
             />
           );
         })}

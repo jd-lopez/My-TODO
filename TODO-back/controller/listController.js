@@ -13,7 +13,17 @@ exports.createList = async (req, res) => {
       return res.status(401).json({ message: "unauthorized" });
     }
 
-    const newList = new listModel({ user: userId, title, board: id });
+    const lastList = await listModel
+      .findOne({ user: userId, board: id })
+      .sort({ order: -1 });
+    const nextOrder = lastList ? lastList.order + 1 : 0;
+
+    const newList = new listModel({
+      user: userId,
+      title,
+      board: id,
+      order: nextOrder,
+    });
     const saved = await newList.save();
 
     return res.status(200).json(saved);

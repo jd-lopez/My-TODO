@@ -106,10 +106,10 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
                 : "rgb(243, 244, 246)",
               "--user-account-start": isDark
                 ? "rgb(157, 199, 251)"
-                : "rgb(255, 249, 255)",
+                : "rgb(0, 17, 146)",
               "--user-account-end": isDark
                 ? "rgb(0, 13, 107)"
-                : "rgb(5, 3, 255)",
+                : "rgb(255, 255, 220)",
             }}
             aria-label={
               user?.name

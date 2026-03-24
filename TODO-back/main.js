@@ -57,7 +57,6 @@ app.get("/", (req, res) => {
 app.get("/boards", authMiddleware, boardController.getAllBoards);
 app.post("/board", authMiddleware, boardController.createBoard);
 app.delete("/tasks/:id", authMiddleware, taskController.deleteTask);
-app.patch("/tasks/:id", authMiddleware, taskController.markComplete);
 app.get("/board/:id", authMiddleware, boardController.getBoard);
 app.post("/board/:id/lists", authMiddleware, listController.createList);
 app.get("/board/:id/lists", authMiddleware, listController.getAllList);
@@ -73,10 +72,16 @@ app.get(
   taskController.getAllTasks,
 );
 app.delete(
-  "/board/:boardId/lists/:listId/tasks/:taskId",
+  "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
   taskController.deleteTask,
 );
+app.patch(
+  "/boards/:boardId/lists/:listId/tasks/:taskId",
+  authMiddleware,
+  taskController.markComplete,
+);
+
 app.post("/login", authController.login);
 app.post("/register", authController.register);
 

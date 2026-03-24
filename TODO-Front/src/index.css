@@ -61,15 +61,10 @@ body,
   z-index: 1;
 }
 
-#user-account:hover::before {
-  filter: blur(30px);
-  opacity: 0.5;
-}
-
 #user-account {
   --user-account-fill: rgb(243, 244, 246);
   --user-account-start: rgb(255, 4, 4);
-  --user-account-end: rgb(228, 26, 228);
+  --user-account-end: rgb(255, 255, 255);
 }
 
 @keyframes spin {
