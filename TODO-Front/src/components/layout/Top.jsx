@@ -98,9 +98,7 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
             id="user-account"
             type="button"
             className={`relative  isolate inline-flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold ${
-              isDark
-                ? "text-white hover:darkShadow"
-                : "text-slate-900 hover:lightShadow"
+              isDark ? "text-white" : "text-slate-900 "
             }`}
             style={{
               "--user-account-fill": isDark

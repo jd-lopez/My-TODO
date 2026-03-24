@@ -5,7 +5,7 @@ import { useTheme } from "../../../context/ThemeContext";
 import NewTask from "./NewTask";
 import { motion } from "motion/react";
 
-function List({ tasks, onCreate, list, board }) {
+function List({ tasks, onCreate, list, board, onDelete }) {
   const { isDark } = useTheme();
 
   return (
@@ -17,7 +17,12 @@ function List({ tasks, onCreate, list, board }) {
     >
       <h1>{list.title}</h1>
 
-      <TasksContainer tasks={tasks} list={list} board={board} />
+      <TasksContainer
+        tasks={tasks}
+        list={list}
+        board={board}
+        onDelete={onDelete}
+      />
 
       <NewTask onCreate={onCreate} />
     </motion.div>

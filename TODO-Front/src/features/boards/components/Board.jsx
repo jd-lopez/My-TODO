@@ -83,9 +83,8 @@ function Board() {
     }
   }
 
-  async function deleteTask(id) {
-    await api.delete(`/tasks/${id}`);
-    setTasks((prev) => prev.filter((t) => t._id !== id));
+  async function deleteTask(id, listId, taskId) {
+    await api.delete(`board/${id}/list/${listId}/task/${taskId}`);
   }
 
   async function markComplete(id) {
@@ -125,6 +124,7 @@ function Board() {
               tasks={tasks.filter((task) => String(task.list) === list._id)}
               list={list}
               board={board}
+              onDelete={deleteTask}
             />
           );
         })}

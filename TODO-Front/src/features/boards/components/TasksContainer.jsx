@@ -2,14 +2,15 @@ import { useState } from "react";
 import TaskModal from "./TaskModal";
 import { AnimatePresence } from "motion/react";
 import { motion } from "motion/react";
-import crossIcon from "../../../assets/icon-cross.svg";
-import crossIconDark from "../../../assets/icon_cross_dark.svg";
-import edit from "../../../assets/pencil.svg";
-import editDark from "../../../assets/pencil_dark.svg";
-import checkIcon from "../../../assets/icon-check.svg";
 import { useTheme } from "../../../context/ThemeContext";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import {
+  faPencil,
+  faXmark,
+  faCircleCheck,
+} from "@fortawesome/free-solid-svg-icons";
 
-function TasksContainer({ tasks, list, board }) {
+function TasksContainer({ tasks, list, board, onDelete }) {
   const { isDark } = useTheme();
   const [taskModal, setTaskModal] = useState(false);
   const [currentTask, setCurrentTask] = useState();
@@ -41,7 +42,7 @@ function TasksContainer({ tasks, list, board }) {
                   className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200  ${isDark ? "border-white" : "border-purple-600"}
                       ${task.completed ? "bg-blue-500 grid" : "bg-white hidden"}`}
                 >
-                  {task.completed && <img src={checkIcon} alt="" />}
+                  {task.completed && <FontAwesomeIcon icon={faCircleCheck} />}
                 </button>{" "}
                 <h1
                   className={`transition-all w-44 text-justify delay-100 ${task.completed ? "line-through text-gray-400" : ""}`}
@@ -49,19 +50,16 @@ function TasksContainer({ tasks, list, board }) {
                   {task.title ?? task.text}
                 </h1>
                 <div className="flex justify-end items-center gap-2  w-14 ">
-                  <button onClick={(e) => e.stopPropagation()}>
-                    <img
-                      src={isDark ? crossIconDark : crossIcon}
-                      alt=""
-                      className="size-3 hover:scale-140"
-                    />
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      onDelete(board._id, list._id, task._id);
+                    }}
+                  >
+                    <FontAwesomeIcon icon={faXmark} />
                   </button>
                   <button onClick={(e) => e.stopPropagation()}>
-                    <img
-                      src={isDark ? editDark : edit}
-                      alt=""
-                      className={`size-4 hover:scale-140 ${task.completed ? "invisible" : ""}`}
-                    />
+                    <FontAwesomeIcon icon={faPencil} />
                   </button>
                 </div>
               </motion.div>

@@ -72,6 +72,11 @@ app.get(
   authMiddleware,
   taskController.getAllTasks,
 );
+app.delete(
+  "/board/:boardId/lists/:listId/tasks/:taskId",
+  authMiddleware,
+  taskController.deleteTask,
+);
 app.post("/login", authController.login);
 app.post("/register", authController.register);
 

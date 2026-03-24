@@ -59,7 +59,7 @@ exports.getAllTasks = async (req, res) => {
 
 exports.deleteTask = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { boardId, listId, taskId } = req.params;
     const userId = getUserId(req);
 
     if (!userId) {
@@ -67,9 +67,13 @@ exports.deleteTask = async (req, res) => {
     }
 
     const deleted = await taskModel.findOneAndDelete({
-      _id: id,
+      board: boardId,
+      _id: taskId,
+      list: listId,
       user: userId,
     });
+
+    console.log(deleted);
 
     if (!deleted) {
       return res.status(404).json({ message: "Task not found" });
