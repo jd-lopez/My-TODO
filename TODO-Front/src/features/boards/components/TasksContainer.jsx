@@ -10,7 +10,7 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-function TasksContainer({ tasks, list, board, onDelete, onComplete }) {
+function TasksContainer({ tasks, list, board, onDeleteTask, onComplete }) {
   const { isDark } = useTheme();
   const [taskModal, setTaskModal] = useState(false);
   const [currentTask, setCurrentTask] = useState();
@@ -45,10 +45,10 @@ function TasksContainer({ tasks, list, board, onDelete, onComplete }) {
                       onComplete(board._id, list._id, task._id);
                     }}
                     className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200  ${isDark ? "border-white" : "border-purple-600"}
-                      ${task.completed ? " grid" : " hidden"}`}
+                      ${task.completed ? " grid" : "md:hidden"}`}
                   >
                     {task.completed && <FontAwesomeIcon icon={faCircleCheck} />}
-                  </button>{" "}
+                  </button>
                   <h1
                     className={`transition-all w-44 text-justify delay-100 ${task.completed ? "line-through text-gray-400" : ""}`}
                   >
@@ -58,7 +58,7 @@ function TasksContainer({ tasks, list, board, onDelete, onComplete }) {
                     <button
                       onClick={(e) => {
                         e.stopPropagation();
-                        onDelete(board._id, list._id, task._id);
+                        onDeleteTask(board._id, list._id, task._id);
                       }}
                     >
                       <FontAwesomeIcon icon={faXmark} />

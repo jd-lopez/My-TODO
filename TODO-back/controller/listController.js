@@ -1,6 +1,7 @@
 const boardModel = require("../model/boardModel");
 const listModel = require("../model/listModel");
 const getUserId = require("../utils/getUser");
+const taskModel = require("../model/taskModel");
 
 exports.createList = async (req, res) => {
   try {
@@ -44,6 +45,37 @@ exports.getAllList = async (req, res) => {
     const lists = await listModel.find({ user: userId, board: id });
 
     return res.status(200).json(lists);
+  } catch (error) {
+    return res.status(500).json({ message: "Error fetching lists" });
+  }
+};
+
+exports.deleteList = async (req, res) => {
+  try {
+    const { boardId, listId } = req.params;
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ message: "unauthorized" });
+    }
+
+    const deletedList = await listModel.findOneAndDelete({
+      user: userId,
+      board: boardId,
+      _id: listId,
+    });
+
+    if (!deletedList) {
+      return res.status(404).json({ message: "list not found" });
+    }
+
+    const deletedTasks = await taskModel.deleteMany({
+      user: userId,
+      board: boardId,
+      list: listId,
+    });
+
+    return res.status(200).json({ listId: deletedList._id });
   } catch (error) {
     return res.status(500).json({ message: "Error fetching lists" });
   }

@@ -56,9 +56,9 @@ app.get("/", (req, res) => {
 });
 app.get("/boards", authMiddleware, boardController.getAllBoards);
 app.post("/board", authMiddleware, boardController.createBoard);
-app.delete("/tasks/:id", authMiddleware, taskController.deleteTask);
 app.get("/board/:id", authMiddleware, boardController.getBoard);
 app.post("/board/:id/lists", authMiddleware, listController.createList);
+
 app.get("/board/:id/lists", authMiddleware, listController.getAllList);
 app.post(
   "/board/:boardId/lists/:listId/tasks",
@@ -75,6 +75,11 @@ app.delete(
   "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
   taskController.deleteTask,
+);
+app.delete(
+  "/boards/:boardId/lists/:listId",
+  authMiddleware,
+  listController.deleteList,
 );
 app.patch(
   "/boards/:boardId/lists/:listId/tasks/:taskId",

@@ -4,7 +4,6 @@ import api from "../../../services/api";
 import BoardHeader from "./BoardHeader";
 import NewList from "./NewList";
 import List from "./List";
-import { motion } from "motion/react";
 
 function Board() {
   const [board, setBoard] = useState();
@@ -84,7 +83,7 @@ function Board() {
   }
 
   async function deleteTask(boardId, listId, taskId) {
-    await api.delete(`boards/${boardId}/lists/${listId}/tasks/${taskId}`);
+    await api.delete(`/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
     setTasks((prev) => prev.filter((task) => task._id !== taskId));
   }
 
@@ -96,15 +95,16 @@ function Board() {
     );
 
     try {
-      await api.patch(`boards/${boardId}/lists/${listId}/tasks/${taskId}`);
+      await api.patch(`/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
     } catch (err) {
       console.error(err);
     }
   }
 
-  async function moveTask(id, status) {
-    setTasks((prev) => prev.map((t) => (t._id === id ? { ...t, status } : t)));
-    await api.patch(`/tasks/${id}`, { status });
+  async function deleteList(boardId, listId) {
+    await api.delete(`/boards/${boardId}/lists/${listId}`);
+    setLists((prev) => prev.filter((list) => list._id !== listId));
+    setTasks((prev) => prev.filter((task) => String(task.list) !== listId));
   }
 
   return (
@@ -125,8 +125,9 @@ function Board() {
               tasks={tasks.filter((task) => String(task.list) === list._id)}
               list={list}
               board={board}
-              onDelete={deleteTask}
+              onDeleteTask={deleteTask}
               onComplete={markComplete}
+              onDeleteList={deleteList}
             />
           );
         })}
