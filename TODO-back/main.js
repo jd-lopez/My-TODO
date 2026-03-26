@@ -84,7 +84,7 @@ app.delete(
 app.patch(
   "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
-  taskController.markComplete,
+  taskController.updateTask,
 );
 
 app.post("/login", authController.login);

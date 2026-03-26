@@ -16,6 +16,7 @@ function List({
   onDeleteTask,
   onComplete,
   onDeleteList,
+  onAddDescription,
 }) {
   const { isDark } = useTheme();
   const [currentList, setCurrentList] = useState();
@@ -30,7 +31,7 @@ function List({
         exit={{ opacity: 0, scale: 0 }}
       >
         <div className="relative flex justify-between">
-          <h1>{list.title}</h1>
+          <h1 className="font-semibold">{list.title}</h1>
           <div>
             <button
               onClick={() => {
@@ -45,7 +46,7 @@ function List({
             {listActionModal && currentList && (
               <>
                 <div
-                  className={`fixed z-10 top-0 bottom-0 left-0 right-0 ${isDark ? "bg-black/05" : "bg-gray-500/20"}`}
+                  className={`fixed z-10 top-18 bottom-0 left-0 right-0 ${isDark ? "bg-black/05" : "bg-gray-500/20"}`}
                   onClick={() => setListActionModal(false)}
                 ></div>
                 <ListOptionModal
@@ -65,6 +66,7 @@ function List({
           board={board}
           onDeleteTask={onDeleteTask}
           onComplete={onComplete}
+          onAddDescription={onAddDescription}
         />
 
         <NewTask onCreate={onCreate} />

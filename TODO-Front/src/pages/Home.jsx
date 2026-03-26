@@ -19,10 +19,12 @@ export default function Home() {
   return (
     <section
       className={`h-full min-h-0 flex flex-col ${
-        isDark ? "bg-gray-800 text-white" : "bg-slate-100 text-slate-900"
+        isDark ? "bg-gray-800 text-white" : "bg-slate-200 text-slate-900"
       }`}
     >
-      <div className="mx-auto flex w-full min-h-0 flex-1 flex-col px-4 py-4">
+      <div
+        className={`m-4 flex  min-h-0 flex-1 flex-col px-4 py-4 rounded-md ${isDark ? "bg-gray-700" : "bg-white"}`}
+      >
         <h1 className="text-2xl w-fit mb-4 font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent">
           My Boards
         </h1>
@@ -55,7 +57,9 @@ export default function Home() {
                         alt=""
                         className="rounded-tl-2xl rounded-tr-2xl h-3/4 object-cover"
                       />
-                      <h2 className="text-lg font-semibold p-2">
+                      <h2
+                        className={`text-lg font-semibold p-2 rounded-b-2xl ${isDark ? "bg-gray-600 " : "bg-white"}`}
+                      >
                         {board.title}
                       </h2>
                     </motion.div>

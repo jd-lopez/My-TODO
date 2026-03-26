@@ -85,30 +85,66 @@ exports.deleteTask = async (req, res) => {
   }
 };
 
-exports.markComplete = async (req, res) => {
+// exports.markComplete = async (req, res) => {
+//   try {
+//     const userId = getUserId(req);
+//     const { boardId, listId, taskId } = req.params;
+
+//     if (!userId) {
+//       return res.status(401).json({ message: "Unauthorized" });
+//     }
+
+//     const task = await taskModel.findOne({
+//       board: boardId,
+//       list: listId,
+//       _id: taskId,
+//       user: userId,
+//     });
+//     if (!task) {
+//       return res.status(404).json({ message: "Task not found" });
+//     }
+
+//     task.completed = !task.completed;
+//     await task.save();
+//     return res.status(200).json(task);
+//   } catch (err) {
+//     return res.status(500).json({ message: "Server error" });
+//   }
+// };
+
+exports.updateTask = async (req, res) => {
   try {
     const userId = getUserId(req);
     const { boardId, listId, taskId } = req.params;
-    const { status } = req.body || {};
+    const { completed, description, title } = req.body;
 
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
+    const updates = {};
+    if (typeof completed === "boolean") updates.completed = completed;
+    if (typeof description === "string") updates.description = description;
+    if (typeof title === "string") updates.title = title;
 
-    const task = await taskModel.findOne({
-      board: boardId,
-      list: listId,
-      _id: taskId,
-      user: userId,
-    });
-    if (!task) {
+    const updatedTask = await taskModel.findOneAndUpdate(
+      {
+        board: boardId,
+        list: listId,
+        _id: taskId,
+        user: userId,
+      },
+      {
+        $set: updates,
+      },
+      { new: true },
+    );
+
+    if (!updatedTask) {
       return res.status(404).json({ message: "Task not found" });
     }
 
-    task.completed = !task.completed;
-    await task.save();
-    return res.status(200).json(task);
-  } catch (err) {
-    return res.status(500).json({ message: "Server error" });
+    return res.status(200).json(updatedTask);
+  } catch (error) {
+    return res.status(500).json({ message: "Server error", error });
   }
 };

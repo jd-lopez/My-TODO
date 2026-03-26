@@ -82,20 +82,42 @@ function Board() {
     }
   }
 
+  async function addDescription(description, listId, taskId) {
+    try {
+      const res = await api.patch(
+        `/boards/${id}/lists/${listId}/tasks/${taskId}`,
+        {
+          description,
+        },
+      );
+      const updatedTask = res.data;
+
+      setTasks((prev) =>
+        prev.map((task) => (task._id === taskId ? updatedTask : task)),
+      );
+    } catch (err) {
+      console.error("This is the error: ", err);
+    }
+  }
+
   async function deleteTask(boardId, listId, taskId) {
     await api.delete(`/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
     setTasks((prev) => prev.filter((task) => task._id !== taskId));
   }
 
-  async function markComplete(boardId, listId, taskId) {
-    setTasks((prev) =>
-      prev.map((task) =>
-        task._id === taskId ? { ...task, completed: !task.completed } : task,
-      ),
-    );
-
+  async function markComplete(boardId, listId, taskId, currentCompleted) {
     try {
-      await api.patch(`/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
+      const res = await api.patch(
+        `/boards/${boardId}/lists/${listId}/tasks/${taskId}`,
+        {
+          completed: !currentCompleted,
+        },
+      );
+      const updatedTask = res.data;
+
+      setTasks((prev) =>
+        prev.map((task) => (task._id === taskId ? updatedTask : task)),
+      );
     } catch (err) {
       console.error(err);
     }
@@ -128,6 +150,7 @@ function Board() {
               onDeleteTask={deleteTask}
               onComplete={markComplete}
               onDeleteList={deleteList}
+              onAddDescription={addDescription}
             />
           );
         })}

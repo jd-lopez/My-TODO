@@ -10,10 +10,19 @@ import {
   faCircleCheck,
 } from "@fortawesome/free-solid-svg-icons";
 
-function TasksContainer({ tasks, list, board, onDeleteTask, onComplete }) {
+function TasksContainer({
+  tasks,
+  list,
+  board,
+  onDeleteTask,
+  onComplete,
+  onAddDescription,
+}) {
   const { isDark } = useTheme();
   const [taskModal, setTaskModal] = useState(false);
-  const [currentTask, setCurrentTask] = useState();
+  const [selectedTaskId, setSelectedTaskId] = useState(null);
+
+  const currentTask = tasks.find((task) => task._id === selectedTaskId);
 
   let isEmpty = tasks.length === 0;
 
@@ -30,7 +39,7 @@ function TasksContainer({ tasks, list, board, onDeleteTask, onComplete }) {
                   key={task._id}
                   className={`group overflow-hidden flex items-center justify-between gap-2 shadow p-1 rounded-md transition-all delay-75 hover:scale-102 hover:cursor-pointer ${isDark ? "bg-slate-700 " : "bg-gray-200 text-black"}`}
                   onClick={() => {
-                    setCurrentTask(task);
+                    setSelectedTaskId(task._id);
                     setTaskModal(true);
                   }}
                   layout
@@ -42,7 +51,12 @@ function TasksContainer({ tasks, list, board, onDeleteTask, onComplete }) {
                   <button
                     onClick={(e) => {
                       e.stopPropagation();
-                      onComplete(board._id, list._id, task._id);
+                      onComplete(
+                        board._id,
+                        list._id,
+                        task._id,
+                        task.completed,
+                      );
                     }}
                     className={`  group-hover:grid rounded-full border-2  transition-all delay-75 size-4 place-content-center hover:scale-120 active:scale-200  ${isDark ? "border-white" : "border-purple-600"}
                       ${task.completed ? " grid" : "md:hidden"}`}
@@ -87,13 +101,21 @@ function TasksContainer({ tasks, list, board, onDeleteTask, onComplete }) {
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.2, ease: "easeOut" }}
-              onClick={() => setTaskModal(false)}
+              onClick={() => {
+                setTaskModal(false);
+                setSelectedTaskId(null);
+              }}
             />
             <TaskModal
-              onClose={() => setTaskModal(false)}
+              onClose={() => {
+                setTaskModal(false);
+                setSelectedTaskId(null);
+              }}
               task={currentTask}
               list={list}
               board={board}
+              onComplete={onComplete}
+              onAddDescription={onAddDescription}
             />
           </>
         )}
