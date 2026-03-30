@@ -51,23 +51,21 @@ app.use(
   }),
 );
 app.use(express.json());
-app.get("/", (req, res) => {
-  res.send("API is running");
-});
-app.get("/boards", authMiddleware, boardController.getAllBoards);
-app.post("/board", authMiddleware, boardController.createBoard);
-app.get("/board/:id", authMiddleware, boardController.getBoard);
-app.post("/board/:id/lists", authMiddleware, listController.createList);
 
-app.get("/board/:id/lists", authMiddleware, listController.getAllList);
+app.get("/boards", authMiddleware, boardController.getAllBoards);
+app.post("/boards", authMiddleware, boardController.createBoard);
+app.get("/boards/:boardId", authMiddleware, boardController.getBoard);
+app.post("/boards/:boardId/lists", authMiddleware, listController.createList);
+
+app.get("/boards/:boardId/lists", authMiddleware, listController.getAllList);
 app.post(
-  "/board/:boardId/lists/:listId/tasks",
+  "/boards/:boardId/lists/:listId/tasks",
   authMiddleware,
   taskController.createTask,
 );
 
 app.get(
-  "/board/:boardId/lists/:listId/tasks",
+  "/boards/:boardId/lists/:listId/tasks",
   authMiddleware,
   taskController.getAllTasks,
 );

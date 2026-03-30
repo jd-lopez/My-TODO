@@ -1,8 +1,8 @@
 import { useNavigate } from "react-router-dom";
-import { useTheme } from "../context/ThemeContext";
+import { useTheme } from "../../../context/ThemeContext";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
-import api from "../services/api";
+import api from "../../../services/api";
 
 export default function Home() {
   const { isDark } = useTheme();
@@ -37,11 +37,11 @@ export default function Home() {
                 {boards.map((board) => {
                   return (
                     <motion.div
-                      to="/app/board"
+                      to="/app/boards/:boardId"
                       className={`flex flex-col rounded-2xl shadow-sm justify-between h-46 ${isDark ? "bg-gray-500 text-white" : ""}`}
                       key={board._id}
                       onClick={() => {
-                        navigate(`/app/board/${board._id}`);
+                        navigate(`/app/boards/${board._id}`);
                       }}
                       initial={{ scale: 0, opacity: 0 }}
                       animate={{ scale: 1, opacity: 1 }}

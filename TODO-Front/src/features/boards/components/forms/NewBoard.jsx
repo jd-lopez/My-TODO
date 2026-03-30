@@ -1,10 +1,9 @@
-import React from "react";
 import { useState } from "react";
-import api from "../../../services/api";
+import api from "../../../../services/api";
 import { useNavigate } from "react-router-dom";
-import { useAuth } from "../../../context/AuthContext";
-import { useTheme } from "../../../context/ThemeContext";
-import { boardBackgrounds } from "../data/boardBackgrounds";
+import { useAuth } from "../../../../context/AuthContext";
+import { useTheme } from "../../../../context/ThemeContext";
+import { boardBackgrounds } from "../../data/boardBackgrounds";
 
 export default function NewBoard({ onClose }) {
   const [title, setTitle] = useState("");
@@ -16,14 +15,14 @@ export default function NewBoard({ onClose }) {
 
   async function createBoard(title, selectedBackground) {
     try {
-      const res = await api.post("/board", {
+      const res = await api.post("/boards", {
         title,
         owner: user,
         background: selectedBackground,
       });
       const newBoard = res.data;
       onClose?.();
-      navigate(`/app/board/${newBoard._id}`);
+      navigate(`/app/boards/${newBoard._id}`);
       console.log("Board created:", newBoard);
     } catch (err) {
       throw new Error("Error creating board: " + err.message);

@@ -1,5 +1,5 @@
-import React from "react";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../../../context/ThemeContext";
+import { motion } from "motion/react";
 
 export default function ListOptionModal({
   onCloseModal,
@@ -9,7 +9,13 @@ export default function ListOptionModal({
 }) {
   const { isDark } = useTheme();
   return (
-    <div className="absolute z-20 right-14 md:right-5 -top-2  ">
+    <motion.div
+      className="absolute z-20 right-14 md:right-5 -top-2  "
+      initial={{ opacity: 0, scale: 0 }}
+      animate={{ opacity: 1, scale: 1 }}
+      exit={{ opacity: 0, scale: 0 }}
+      transition={{ duration: 0.24, ease: "easeOut" }}
+    >
       <dialog
         open
         className={`px-1 py-4 rounded-md min-w-44 md:w-64 flex flex-col gap-4 ${isDark ? "bg-slate-800 text-white" : ""}`}
@@ -38,6 +44,6 @@ export default function ListOptionModal({
           </button>
         </div>
       </dialog>
-    </div>
+    </motion.div>
   );
 }

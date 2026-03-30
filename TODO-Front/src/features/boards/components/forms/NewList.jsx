@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { CreatorForm } from "./CreatorForm";
+import CreatorForm from "./CreatorForm";
 
 function NewList({ onCreate }) {
   const [clicked, setClicked] = useState(false);
@@ -11,11 +11,12 @@ function NewList({ onCreate }) {
     <div onClick={() => setClicked(!clicked)}>
       {clicked ? (
         <CreatorForm
-          setClicked={setClicked}
-          title={title}
-          setTitle={setTitle}
+          setOpen={setClicked}
+          value={title}
+          setValue={setTitle}
           placeholder={"New List"}
-          onCreate={onCreate}
+          onSubmit={onCreate}
+          submitLabel="Add"
         />
       ) : (
         <button

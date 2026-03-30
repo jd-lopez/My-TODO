@@ -1,20 +1,20 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import api from "../../../services/api";
+import api from "../../../../services/api";
 import BoardHeader from "./BoardHeader";
-import NewList from "./NewList";
+import NewList from "../forms/NewList";
 import List from "./List";
 
 function Board() {
   const [board, setBoard] = useState();
   const [tasks, setTasks] = useState([]);
   const [lists, setLists] = useState([]);
-  const { id } = useParams();
+  const { boardId } = useParams();
 
   useEffect(() => {
     async function loadBoard() {
       try {
-        const res = await api.get(`/board/${id}`);
+        const res = await api.get(`/boards/${boardId}`);
         setBoard(res.data);
         console.log(res.data);
       } catch (error) {
@@ -23,12 +23,12 @@ function Board() {
     }
 
     loadBoard();
-  }, [id]);
+  }, [boardId]);
 
   useEffect(() => {
     async function loadLists() {
       try {
-        const res = await api.get(`/board/${id}/lists`);
+        const res = await api.get(`/boards/${boardId}/lists`);
         setLists(res.data);
       } catch (error) {
         console.error(error);
@@ -36,7 +36,7 @@ function Board() {
     }
 
     loadLists();
-  }, [id]);
+  }, [boardId]);
 
   useEffect(() => {
     async function loadTasks() {
@@ -47,7 +47,9 @@ function Board() {
 
       try {
         const responses = await Promise.all(
-          lists.map((list) => api.get(`/board/${id}/lists/${list._id}/tasks`)),
+          lists.map((list) =>
+            api.get(`/boards/${boardId}/lists/${list._id}/tasks`),
+          ),
         );
         setTasks(responses.flatMap((response) => response.data));
       } catch (error) {
@@ -56,11 +58,11 @@ function Board() {
     }
 
     loadTasks();
-  }, [id, lists]);
+  }, [boardId, lists]);
 
   async function createList(title) {
     try {
-      const res = await api.post(`/board/${id}/lists`, {
+      const res = await api.post(`/boards/${boardId}/lists`, {
         title,
       });
       const newList = res.data;
@@ -72,7 +74,7 @@ function Board() {
 
   async function createTask(title, listId) {
     try {
-      const res = await api.post(`/board/${id}/lists/${listId}/tasks`, {
+      const res = await api.post(`/boards/${boardId}/lists/${listId}/tasks`, {
         title,
       });
       const newTask = res.data;
@@ -85,7 +87,7 @@ function Board() {
   async function addDescription(description, listId, taskId) {
     try {
       const res = await api.patch(
-        `/boards/${id}/lists/${listId}/tasks/${taskId}`,
+        `/boards/${boardId}/lists/${listId}/tasks/${taskId}`,
         {
           description,
         },
@@ -99,6 +101,20 @@ function Board() {
       console.error("This is the error: ", err);
     }
   }
+
+  const updateTitle = async (title, listId, taskId) => {
+    const res = await api.patch(
+      `/boards/${boardId}/lists/${listId}/tasks/${taskId}`,
+      {
+        title,
+      },
+    );
+    const updatedTask = res.data;
+
+    setTasks((prev) =>
+      prev.map((task) => (task._id === taskId ? updatedTask : task)),
+    );
+  };
 
   async function deleteTask(boardId, listId, taskId) {
     await api.delete(`/boards/${boardId}/lists/${listId}/tasks/${taskId}`);
@@ -131,30 +147,36 @@ function Board() {
 
   return (
     <div
-      className="h-screen bg-cover"
+      className="relative h-screen bg-cover bg-center"
       style={{ backgroundImage: `url(${board?.background})` }}
     >
-      <BoardHeader title={board?.title} />
-      <div
-        id="board-canvas"
-        className="flex items-start gap-3 p-4 overflow-x-auto h-108"
-      >
-        {lists.map((list) => {
-          return (
-            <List
-              key={list._id}
-              onCreate={(title) => createTask(title, list._id)}
-              tasks={tasks.filter((task) => String(task.list) === list._id)}
+      <div className="absolute inset-0 bg-black/20"></div>
+
+      <div className="relative z-10">
+        <BoardHeader className="" title={board?.title} />
+
+        <div
+          id="board-canvas"
+          className="flex items-start gap-3 p-4 overflow-x-auto h-108"
+        >
+          {lists.map((list) => {
+            return (
+              <List
+                key={list._id}
+                onCreate={(title) => createTask(title, list._id)}
+                tasks={tasks.filter((task) => String(task.list) === list._id)}
               list={list}
               board={board}
               onDeleteTask={deleteTask}
-              onComplete={markComplete}
-              onDeleteList={deleteList}
-              onAddDescription={addDescription}
-            />
-          );
-        })}
-        <NewList onCreate={createList} />
+                onComplete={markComplete}
+                onDeleteList={deleteList}
+                onAddDescription={addDescription}
+                onUpdateTitle={updateTitle}
+              />
+            );
+          })}
+          <NewList onCreate={createList} />
+        </div>
       </div>
     </div>
   );

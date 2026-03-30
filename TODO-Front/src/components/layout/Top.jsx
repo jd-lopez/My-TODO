@@ -10,10 +10,12 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import NewBoard from "../../features/boards/components/NewBoard";
+import NewBoard from "../../features/boards/components/forms/NewBoard";
+import AccountModal from "../../features/boards/components/modals/AccountModal";
 
 function Top({ onToggleSidebar, isSidebarOpen }) {
   const [showModal, setShowModal] = useState(false);
+  const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
   const { isDark, toggleTheme } = useTheme();
   const { user, isAuthenticated, logout } = useAuth();
@@ -22,7 +24,7 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
 
   return (
     <header
-      className={`flex justify-between items-center px-4 py-3 md:p-4 transition-all duration-300 border-b border-gray-300 ${
+      className={` flex justify-between items-center px-4 py-3 md:p-4 transition-all duration-300 border-b border-gray-300 ${
         isDark ? "bg-slate-900 text-white" : "bg-white text-black"
       }`}
     >
@@ -121,11 +123,17 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
                 ? `${user.name.first} ${user.name.last}`.trim()
                 : "User initials"
             }
+            onClick={() => {
+              setAccountMenuOpen(!accountMenuOpen);
+              console.log("fgu");
+            }}
           >
             <span className="relative z-10">{initials || "U"}</span>
           </button>
         ) : null}
       </div>
+
+      {isAuthenticated && accountMenuOpen && <AccountModal />}
     </header>
   );
 }

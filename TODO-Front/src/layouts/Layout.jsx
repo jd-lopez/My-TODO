@@ -18,11 +18,11 @@ export default function Layout() {
       <div className="flex flex-1 min-h-0">
         <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
         <main
-          className={`flex-1 min-h-0 overflow-hidden ${
+          className={`flex-1 min-h-0 overflow-hidden relative ${
             isDark ? "text-white" : "text-black"
           }`}
         >
-          <Outlet />
+          <Outlet className="" />
         </main>
       </div>
     </div>

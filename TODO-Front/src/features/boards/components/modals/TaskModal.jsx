@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useTheme } from "../../../context/ThemeContext";
+import { useTheme } from "../../../../context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
@@ -68,6 +68,7 @@ function TaskModal({
                   id="description"
                   cols="2"
                   rows="3"
+                  placeholder="Add a description to this task"
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>

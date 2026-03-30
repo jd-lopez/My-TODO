@@ -1,9 +1,8 @@
-import React from "react";
 import { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
-import { useTheme } from "../../../context/ThemeContext";
-import { CreatorForm } from "./CreatorForm";
+import { useTheme } from "../../../../context/ThemeContext";
+import CreatorForm from "./CreatorForm";
 
 export default function NewTask({ onCreate }) {
   const { isDark } = useTheme();
@@ -16,11 +15,12 @@ export default function NewTask({ onCreate }) {
     >
       {clicked ? (
         <CreatorForm
-          setClicked={setClicked}
-          title={title}
-          setTitle={setTitle}
+          setOpen={setClicked}
+          value={title}
+          setValue={setTitle}
           placeholder={"New Task"}
-          onCreate={onCreate}
+          onSubmit={onCreate}
+          submitLabel="Add"
         />
       ) : (
         <button

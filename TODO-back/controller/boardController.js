@@ -38,7 +38,7 @@ exports.getAllBoards = async (req, res) => {
 
 exports.getBoard = async (req, res) => {
   try {
-    const { id } = req.params;
+    const { boardId } = req.params;
     const userId = req.user?.id || req.userId?.id || req.userID?.id;
 
     if (!userId) {
@@ -46,7 +46,7 @@ exports.getBoard = async (req, res) => {
     }
 
     const board = await boardModel.findOne({
-      _id: id,
+      _id: boardId,
       owner: userId,
     });
 

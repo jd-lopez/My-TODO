@@ -1,12 +1,11 @@
-import React from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEllipsis } from "@fortawesome/free-solid-svg-icons";
 import { useState } from "react";
 import TasksContainer from "./TasksContainer";
-import { useTheme } from "../../../context/ThemeContext";
-import NewTask from "./NewTask";
+import { useTheme } from "../../../../context/ThemeContext";
+import NewTask from "../forms/NewTask";
 import { AnimatePresence, motion } from "motion/react";
-import ListOptionModal from "./ListOptionModal";
+import ListOptionModal from "../modals/ListOptionModal";
 
 function List({
   tasks,
@@ -17,6 +16,7 @@ function List({
   onComplete,
   onDeleteList,
   onAddDescription,
+  onUpdateTitle,
 }) {
   const { isDark } = useTheme();
   const [currentList, setCurrentList] = useState();
@@ -43,20 +43,42 @@ function List({
               <FontAwesomeIcon icon={faEllipsis} />
             </button>
 
-            {listActionModal && currentList && (
-              <>
-                <div
-                  className={`fixed z-10 top-18 bottom-0 left-0 right-0 ${isDark ? "bg-black/05" : "bg-gray-500/20"}`}
-                  onClick={() => setListActionModal(false)}
-                ></div>
-                <ListOptionModal
-                  onCloseModal={setListActionModal}
-                  onDeleteList={onDeleteList}
-                  boardId={board._id}
-                  listId={list._id}
-                />
-              </>
-            )}
+            <AnimatePresence>
+              {listActionModal && currentList && (
+                <>
+                  <div
+                    className={`fixed z-10 top-18 bottom-0 left-0 right-0 ${isDark ? "bg-black/05" : "bg-gray-500/20"}`}
+                    onClick={() => setListActionModal(false)}
+                  ></div>
+                  <motion.div
+                    intial={{
+                      opacity: 0,
+                      y: -20,
+                    }}
+                    animate={{
+                      opacity: 1,
+                      y: 0,
+                    }}
+                    exit={{
+                      opacity: 0,
+                      y: -20,
+                    }}
+                    transition={{
+                      duration: 0.5,
+                      delay: 0.4,
+                      ease: "easeOut",
+                    }}
+                  >
+                    <ListOptionModal
+                      onCloseModal={setListActionModal}
+                      onDeleteList={onDeleteList}
+                      boardId={board._id}
+                      listId={list._id}
+                    />
+                  </motion.div>
+                </>
+              )}
+            </AnimatePresence>
           </div>
         </div>
 
@@ -67,6 +89,7 @@ function List({
           onDeleteTask={onDeleteTask}
           onComplete={onComplete}
           onAddDescription={onAddDescription}
+          onUpdateTitle={onUpdateTitle}
         />
 
         <NewTask onCreate={onCreate} />
