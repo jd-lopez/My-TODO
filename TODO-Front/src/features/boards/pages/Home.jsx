@@ -1,12 +1,16 @@
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useOutletContext } from "react-router-dom";
 import { useTheme } from "../../../context/ThemeContext";
 import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import api from "../../../services/api";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const { isDark } = useTheme();
   const [boards, setBoards] = useState([]);
+
+  const { showModal, setShowModal } = useOutletContext();
 
   const navigate = useNavigate();
 
@@ -32,7 +36,22 @@ export default function Home() {
         {/*Board list container */}
         <div className="flex-1 min-h-0 overflow-y-auto pr-1">
           <div className="grid grid-cols-1 gap-4 md:grid-cols-4 xl:grid-cols-4 p-4">
-            {boards.length > 0 ? (
+            <div
+              className={`flex h-46 flex-col items-center justify-center gap-2 rounded-2xl shadow ${isDark ? "border-blue-600 border bg-slate-500" : "border-gray-300 border"}`}
+            >
+              <button
+                className={`rounded-full p-3 grid items-center border border-black ${isDark ? "border-blue-600 hover:bg-slate-800 " : "border-gray-300 hover:bg-gray-100 w"}`}
+                onClick={() => setShowModal((prev) => !prev)}
+              >
+                <FontAwesomeIcon
+                  icon={faPlus}
+                  className={` ${isDark ? "text-blue-600" : "text-black"}`}
+                />
+              </button>
+              <p>Create a new board</p>
+            </div>
+
+            {boards.length > 0 && (
               <>
                 {boards.map((board) => {
                   return (
@@ -66,8 +85,6 @@ export default function Home() {
                   );
                 })}
               </>
-            ) : (
-              <div>No board yet</div>
             )}
           </div>
         </div>

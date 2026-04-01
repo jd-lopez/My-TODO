@@ -35,7 +35,9 @@ export default function NewBoard({ onClose }) {
   };
 
   return (
-    <div className={`absolute top-17 z-50 right-56 md:top-19 md:right-62 `}>
+    <div
+      className={`flex shrink absolute min-w-80 top-17 z-50  md:top-20 right-1/2 translate-x-1/2 md:min-w-90 `}
+    >
       <dialog
         open
         className={`px-4 py-6 rounded-md ${isDark ? "bg-slate-700 text-white" : ""}`}
@@ -43,7 +45,7 @@ export default function NewBoard({ onClose }) {
         <form
           action=""
           onSubmit={handleSubmit}
-          className="flex flex-col justify-between h-full gap-10"
+          className="flex shrink flex-col justify-between h-full gap-10"
         >
           <h1 className="self-center font-bold bg-linear-to-r from-blue-600 to-cyan-300 bg-clip-text text-transparent ">
             New Board

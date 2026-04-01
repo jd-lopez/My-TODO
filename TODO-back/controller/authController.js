@@ -19,12 +19,19 @@ exports.register = async (req, res) => {
     const { first, last, email, password } = req.body;
     const normalizedName = normalizeNameInput({ first, last });
 
+    const palette = [
+      "#2563EB",
+      "#14B8A6",
+      "#F97316",
+      "#E11D48",
+      "#7C3AED",
+      "#22C55E",
+    ];
+
     if (!normalizedName.first || !normalizedName.last || !email || !password) {
-      return res
-        .status(400)
-        .json({
-          message: "First name, last name, email and password are required",
-        });
+      return res.status(400).json({
+        message: "First name, last name, email and password are required",
+      });
     }
 
     const existingUser = await User.findOne({ email });
@@ -34,11 +41,13 @@ exports.register = async (req, res) => {
     }
 
     const hashedPassword = await bcrypt.hash(password, 10);
+    const randomColor = palette[Math.floor(Math.random() * palette.length)];
 
     const user = await User.create({
       name: normalizedName,
       email,
       password: hashedPassword,
+      color: randomColor,
     });
 
     const token = signToken(user._id);
@@ -52,6 +61,7 @@ exports.register = async (req, res) => {
           last: user.name.last || "",
         },
         email: user.email,
+        color: user.color,
       },
     });
   } catch (error) {
@@ -89,6 +99,7 @@ exports.login = async (req, res) => {
           last: user.name.last || "",
         },
         email: user.email,
+        color: user.color,
       },
     });
   } catch (error) {

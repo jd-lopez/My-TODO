@@ -1,24 +1,16 @@
-import { Fragment, useState } from "react";
+import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faBars,
-  faMoon,
-  faSignOut,
-  faSun,
-  faXmark,
-} from "@fortawesome/free-solid-svg-icons";
+import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
-import NewBoard from "../../features/boards/components/forms/NewBoard";
 import AccountModal from "../../features/boards/components/modals/AccountModal";
 
-function Top({ onToggleSidebar, isSidebarOpen }) {
-  const [showModal, setShowModal] = useState(false);
+function Top({ onToggleSidebar, isSidebarOpen, showModal, setShowModal }) {
   const [accountMenuOpen, setAccountMenuOpen] = useState(false);
 
-  const { isDark, toggleTheme } = useTheme();
-  const { user, isAuthenticated, logout } = useAuth();
+  const { isDark } = useTheme();
+  const { user, isAuthenticated } = useAuth();
   const initials =
     `${user?.name?.first?.[0] || ""}${user?.name?.last?.[0] || ""}`.toUpperCase();
 
@@ -51,67 +43,26 @@ function Top({ onToggleSidebar, isSidebarOpen }) {
       <div className="flex items-center gap-2 md:gap-3 text-sm md:text-lg">
         <button
           className={`bg-blue-800 text-white rounded-md px-2 py-1 font-bold cursor-pointer ${isDark ? "hover:darkShadow" : "hover:lightShadow"}`}
-          onClick={() => setShowModal(!showModal)}
+          onClick={() => {
+            if (showModal) {
+              return;
+            }
+
+            setShowModal((prev) => !prev);
+          }}
         >
           Create
-        </button>
-
-        {showModal && (
-          <Fragment>
-            <div
-              className={`fixed z-40 ${showModal ? "top-16 md:top-18 bottom-0 left-0 right-0" : ""} ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
-              onClick={() => setShowModal(false)}
-            ></div>
-            <NewBoard onClose={() => setShowModal(false)} />
-          </Fragment>
-        )}
-
-        {isAuthenticated ? (
-          <button
-            onClick={logout}
-            className={`rounded-md border px-2 py-1 ${
-              isDark
-                ? "border-slate-600 hover:bg-slate-800 hover:darkShadow"
-                : "border-gray-300 hover:bg-gray-100 hover:lightShadow"
-            }`}
-            aria-label="Log out"
-          >
-            <FontAwesomeIcon icon={faSignOut} />
-          </button>
-        ) : null}
-        <button
-          onClick={toggleTheme}
-          className={`rounded-md border px-2 py-1 ${
-            isDark
-              ? "border-slate-600 hover:bg-slate-800 hover:darkShadow"
-              : "border-gray-300 hover:bg-gray-100 hover:lightShadow"
-          }`}
-          aria-label={isDark ? "Activate light mode" : "Activate dark mode"}
-        >
-          {isDark ? (
-            <FontAwesomeIcon icon={faSun} />
-          ) : (
-            <FontAwesomeIcon icon={faMoon} />
-          )}
         </button>
 
         {isAuthenticated ? (
           <button
             id="user-account"
             type="button"
-            className={`relative  isolate inline-flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold ${
+            className={`relative  isolate inline-flex h-10 w-10 items-center justify-center rounded-full text-xs font-bold border ${
               isDark ? "text-white" : "text-slate-900 "
             }`}
             style={{
-              "--user-account-fill": isDark
-                ? "rgb(30, 41, 59)"
-                : "rgb(243, 244, 246)",
-              "--user-account-start": isDark
-                ? "rgb(157, 199, 251)"
-                : "rgb(0, 17, 146)",
-              "--user-account-end": isDark
-                ? "rgb(0, 13, 107)"
-                : "rgb(255, 255, 220)",
+              backgroundColor: user?.color,
             }}
             aria-label={
               user?.name
