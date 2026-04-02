@@ -54,7 +54,13 @@ app.use(express.json());
 
 app.get("/boards", authMiddleware, boardController.getAllBoards);
 app.post("/boards", authMiddleware, boardController.createBoard);
+app.post(
+  "/boards/:boardId/members",
+  authMiddleware,
+  boardController.shareBoard,
+);
 app.get("/boards/:boardId", authMiddleware, boardController.getBoard);
+
 app.post("/boards/:boardId/lists", authMiddleware, listController.createList);
 
 app.get("/boards/:boardId/lists", authMiddleware, listController.getAllList);

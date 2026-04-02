@@ -4,12 +4,18 @@ import api from "../../../../services/api";
 import BoardHeader from "./BoardHeader";
 import NewList from "../forms/NewList";
 import List from "./List";
+import { AnimatePresence, motion } from "motion/react";
+import MembersModal from "../modals/MembersModal";
+import { useTheme } from "../../../../context/ThemeContext";
 
 function Board() {
   const [board, setBoard] = useState();
   const [tasks, setTasks] = useState([]);
   const [lists, setLists] = useState([]);
+  const [shareModal, setShareModal] = useState(false);
   const { boardId } = useParams();
+
+  const { isDark } = useTheme();
 
   useEffect(() => {
     async function loadBoard() {
@@ -145,6 +151,19 @@ function Board() {
     setTasks((prev) => prev.filter((task) => String(task.list) !== listId));
   }
 
+  async function shareBoard(email, role) {
+    const boardId = board._id;
+    try {
+      const res = await api.post(`/boards/${boardId}/members`, {
+        email,
+        role,
+      });
+      setBoard(res.data);
+    } catch (error) {
+      console.error("Error sharing board:", error);
+    }
+  }
+
   return (
     <div
       className="relative h-screen bg-cover bg-center"
@@ -153,7 +172,12 @@ function Board() {
       <div className="absolute inset-0 bg-black/20"></div>
 
       <div className="relative z-10">
-        <BoardHeader className="" title={board?.title} />
+        <BoardHeader
+          className=""
+          title={board?.title}
+          shareModal={shareModal}
+          setShareModal={setShareModal}
+        />
 
         <div
           id="board-canvas"
@@ -165,9 +189,9 @@ function Board() {
                 key={list._id}
                 onCreate={(title) => createTask(title, list._id)}
                 tasks={tasks.filter((task) => String(task.list) === list._id)}
-              list={list}
-              board={board}
-              onDeleteTask={deleteTask}
+                list={list}
+                board={board}
+                onDeleteTask={deleteTask}
                 onComplete={markComplete}
                 onDeleteList={deleteList}
                 onAddDescription={addDescription}
@@ -178,6 +202,28 @@ function Board() {
           <NewList onCreate={createList} />
         </div>
       </div>
+
+      <AnimatePresence>
+        {shareModal && (
+          <>
+            <motion.div
+              key="share-backdrop"
+              className={`fixed z-40 top-0 bottom-0 left-0 right-0 ${isDark ? "bg-black/40" : "bg-gray-500/20"}`}
+              transition={{ duration: 0.2, ease: "easeOut" }}
+              onClick={() => {
+                setShareModal(false);
+              }}
+            />
+            <MembersModal
+              onClose={() => {
+                setShareModal(false);
+              }}
+              board={board}
+              onShare={shareBoard}
+            />
+          </>
+        )}
+      </AnimatePresence>
     </div>
   );
 }

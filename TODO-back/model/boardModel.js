@@ -16,11 +16,28 @@ const boardSchema = new mongoose.Schema(
       required: true,
     },
 
-    members: {
-      type: [mongoose.Schema.Types.ObjectId],
-      ref: "User",
-      default: [],
-    },
+    members: [
+      {
+        user: {
+          type: mongoose.Schema.Types.ObjectId,
+          ref: "User",
+          required: true,
+        },
+        role: {
+          type: String,
+          enum: ["owner", "admin", "member"],
+          required: true,
+        },
+        color: {
+          type: String,
+          required: false,
+        },
+        joinedAt: {
+          type: Date,
+          default: Date.now,
+        },
+      },
+    ],
 
     background: {
       type: String,

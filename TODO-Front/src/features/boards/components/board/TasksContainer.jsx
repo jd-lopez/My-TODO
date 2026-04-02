@@ -70,7 +70,10 @@ function TasksContainer({
                       ${task.completed ? " grid" : "md:hidden"}`}
                     >
                       {task.completed && (
-                        <FontAwesomeIcon icon={faCircleCheck} />
+                        <FontAwesomeIcon
+                          icon={faCircleCheck}
+                          className="text-cyan-500"
+                        />
                       )}
                     </button>
                   )}

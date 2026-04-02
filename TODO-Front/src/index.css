@@ -40,3 +40,9 @@ body,
     @apply cursor-pointer  w-full text-left px-2;
   }
 }
+
+@layer components {
+  .actionButton {
+    @apply bg-blue-500 text-white px-2 py-1 rounded-md hover:bg-blue-600 transition-colors duration-300;
+  }
+}

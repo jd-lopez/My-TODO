@@ -42,7 +42,7 @@ function Top({ onToggleSidebar, isSidebarOpen, showModal, setShowModal }) {
       </div>
       <div className="flex items-center gap-2 md:gap-3 text-sm md:text-lg">
         <button
-          className={`bg-blue-800 text-white rounded-md px-2 py-1 font-bold cursor-pointer ${isDark ? "hover:darkShadow" : "hover:lightShadow"}`}
+          className={`bg-blue-500  hover:bg-blue-700 transition-all ease-in text-white rounded-md px-2 py-1 font-bold cursor-pointer `}
           onClick={() => {
             if (showModal) {
               return;
@@ -75,6 +75,7 @@ function Top({ onToggleSidebar, isSidebarOpen, showModal, setShowModal }) {
                 : "User initials"
             }
             onClick={() => {
+              setShowModal(false);
               setAccountMenuOpen(!accountMenuOpen);
               console.log("fgu");
             }}
