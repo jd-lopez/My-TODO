@@ -145,6 +145,6 @@ exports.updateTask = async (req, res) => {
 
     return res.status(200).json(updatedTask);
   } catch (error) {
-    return res.status(500).json({ message: "Server error", error });
+    return res.status(500).json({ message: "Server error" });
   }
 };

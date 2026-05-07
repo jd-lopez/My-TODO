@@ -24,7 +24,7 @@ exports.createBoard = async (req, res) => {
 
     return res.status(201).json(saved);
   } catch (error) {
-    throw new Error("Error creating board: " + error.message);
+    return res.status(500).json({ message: "Server error" });
   }
 };
 
@@ -36,7 +36,9 @@ exports.getAllBoards = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
-    const boards = await boardModel.find({ owner: userId });
+    const boards = await boardModel.find({
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
 
     return res.status(200).json(boards);
   } catch (err) {

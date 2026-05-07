@@ -5,10 +5,14 @@ const boardSchema = new mongoose.Schema(
     title: {
       type: String,
       required: true,
+      trim: true,
+      maxlength: [100, "Title cannot exceed 100 characters"],
     },
     description: {
       type: String,
       required: false,
+      trim: true,
+      maxlength: [500, "Description cannot exceed 500 characters"],
     },
     owner: {
       type: mongoose.Schema.Types.ObjectId,

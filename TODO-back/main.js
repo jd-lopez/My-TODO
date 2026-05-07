@@ -1,6 +1,8 @@
 const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
+const helmet = require("helmet");
+const rateLimit = require("express-rate-limit");
 require("dotenv").config();
 const taskController = require("./controller/taskController");
 const authController = require("./controller/authController");
@@ -18,6 +20,26 @@ if (missingEnvVars.length > 0) {
 }
 
 const app = express();
+
+app.use(helmet());
+app.use(helmet.contentSecurityPolicy({
+  directives: {
+    defaultSrc: ["'self'"],
+    scriptSrc: ["'self'", "'unsafe-inline'"],
+    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+    fontSrc: ["'self'", "https://fonts.gstatic.com"],
+    imgSrc: ["'self'", "data:", "https:"],
+  },
+}));
+
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 20,
+  message: { message: "Too many requests, please try again later" },
+  standardHeaders: true,
+  legacyHeaders: false,
+});
+
 const configuredOrigins = process.env.CLIENT_URL.split(",")
   .map((origin) => origin.trim())
   .filter(Boolean);
@@ -50,7 +72,7 @@ app.use(
     extended: false,
   }),
 );
-app.use(express.json());
+app.use(express.json({ limit: "10kb" }));
 
 app.get("/boards", authMiddleware, boardController.getAllBoards);
 app.post("/boards", authMiddleware, boardController.createBoard);
@@ -91,8 +113,8 @@ app.patch(
   taskController.updateTask,
 );
 
-app.post("/login", authController.login);
-app.post("/register", authController.register);
+app.post("/login", authLimiter, authController.login);
+app.post("/register", authLimiter, authController.register);
 
 const PORT = process.env.PORT || 4000;
 
