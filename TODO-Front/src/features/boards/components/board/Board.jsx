@@ -9,6 +9,8 @@ import MembersModal from "../modals/MembersModal";
 import { useTheme } from "../../../../context/ThemeContext";
 import NotFound from "./NotFound";
 function Board() {
+  const [loading, setLoading] = useState(true);
+
   const [board, setBoard] = useState();
   const [tasks, setTasks] = useState([]);
   const [lists, setLists] = useState([]);
@@ -20,11 +22,15 @@ function Board() {
   useEffect(() => {
     async function loadBoard() {
       try {
+        setLoading(true);
+
         const res = await api.get(`/boards/${boardId}`);
         setBoard(res.data);
         console.log(res.data);
       } catch (error) {
         console.log(error);
+      } finally {
+        setLoading(false);
       }
     }
 
@@ -162,6 +168,10 @@ function Board() {
     } catch (error) {
       console.error("Error sharing board:", error);
     }
+  }
+
+  if (loading) {
+    return <div>Loading...</div>;
   }
 
   if (!board) {
