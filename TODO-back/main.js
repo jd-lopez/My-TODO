@@ -10,7 +10,7 @@ const boardController = require("./controller/boardController");
 const listController = require("./controller/listController");
 const authMiddleware = require("./middleware/auth");
 
-const requiredEnvVars = ["MONGO_URI", "JWT_SECRET", "CLIENT_URL"];
+const requiredEnvVars = ["MONGO_URL", "JWT_SECRET", "CLIENT_URL"];
 const missingEnvVars = requiredEnvVars.filter((key) => !process.env[key]);
 
 if (missingEnvVars.length > 0) {
@@ -22,15 +22,17 @@ if (missingEnvVars.length > 0) {
 const app = express();
 
 app.use(helmet());
-app.use(helmet.contentSecurityPolicy({
-  directives: {
-    defaultSrc: ["'self'"],
-    scriptSrc: ["'self'", "'unsafe-inline'"],
-    styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
-    fontSrc: ["'self'", "https://fonts.gstatic.com"],
-    imgSrc: ["'self'", "data:", "https:"],
-  },
-}));
+app.use(
+  helmet.contentSecurityPolicy({
+    directives: {
+      defaultSrc: ["'self'"],
+      scriptSrc: ["'self'", "'unsafe-inline'"],
+      styleSrc: ["'self'", "'unsafe-inline'", "https://fonts.googleapis.com"],
+      fontSrc: ["'self'", "https://fonts.gstatic.com"],
+      imgSrc: ["'self'", "data:", "https:"],
+    },
+  }),
+);
 
 const authLimiter = rateLimit({
   windowMs: 15 * 60 * 1000,
@@ -97,6 +99,8 @@ app.get(
   authMiddleware,
   taskController.getAllTasks,
 );
+
+app.delete("/boards/:boardId", authMiddleware, boardController.deleteBoard);
 app.delete(
   "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
@@ -107,6 +111,7 @@ app.delete(
   authMiddleware,
   listController.deleteList,
 );
+
 app.patch(
   "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
@@ -119,7 +124,7 @@ app.post("/register", authLimiter, authController.register);
 const PORT = process.env.PORT || 4000;
 
 mongoose
-  .connect(process.env.MONGO_URI)
+  .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Database connected");
     // The API only starts after MongoDB connects, so requests never hit a half-started server.

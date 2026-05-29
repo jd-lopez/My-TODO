@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "motion/react";
 import api from "../../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus } from "@fortawesome/free-solid-svg-icons";
+import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 
 export default function Home() {
   const { isDark } = useTheme();
@@ -20,6 +20,18 @@ export default function Home() {
       setBoards(res.data);
     });
   }, []);
+
+  const handleDelete = async (boardId) => {
+    try {
+      await api.delete(`/boards/${boardId}`);
+      setBoards((prevBoards) =>
+        prevBoards.filter((board) => board._id !== boardId),
+      );
+    } catch (err) {
+      console.error("Error deleting board:", err);
+    }
+  };
+
   return (
     <section
       className={`h-full min-h-0 flex flex-col ${
@@ -57,7 +69,7 @@ export default function Home() {
                   return (
                     <motion.div
                       to="/app/boards/:boardId"
-                      className={`flex flex-col rounded-2xl shadow-sm justify-between h-46 ${isDark ? "bg-gray-500 text-white" : ""}`}
+                      className={`relative flex flex-col rounded-2xl shadow-sm justify-between h-46 ${isDark ? "bg-gray-500 text-white" : ""}`}
                       key={board._id}
                       onClick={() => {
                         navigate(`/app/boards/${board._id}`);
@@ -81,6 +93,20 @@ export default function Home() {
                       >
                         {board.title}
                       </h2>
+
+                      <button
+                        className="absolute top-2 right-2 bg-white rounded-full grid place-content-center p-2"
+                        onClick={(e) => {
+                          e.stopPropagation();
+
+                          handleDelete(board._id);
+                        }}
+                      >
+                        <FontAwesomeIcon
+                          icon={faTrashCan}
+                          className={`text-red-600 focus:animate-bounce`}
+                        />
+                      </button>
                     </motion.div>
                   );
                 })}

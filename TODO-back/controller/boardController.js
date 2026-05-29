@@ -1,6 +1,8 @@
 const boardModel = require("../model/boardModel");
 const userModel = require("../model/userModel");
 const getUserId = require("../utils/getUser");
+const listModel = require("../model/listModel");
+const taskModel = require("../model/taskModel");
 
 exports.createBoard = async (req, res) => {
   try {
@@ -62,6 +64,12 @@ exports.getBoard = async (req, res) => {
       })
       .populate("members.user", "name email color");
 
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
     return res.status(200).json(board);
   } catch (e) {
     return res.status(500).json({ message: "Server down" });
@@ -117,6 +125,35 @@ exports.shareBoard = async (req, res) => {
       .populate("members.user", "name email color");
 
     return res.status(200).json(updatedBoard);
+  } catch (error) {
+    return res.status(500).json({ message: "Server down" });
+  }
+};
+
+exports.deleteBoard = async (req, res) => {
+  const { boardId } = req.params;
+  const userId = getUserId(req);
+
+  try {
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const board = await boardModel.findById({ _id: boardId });
+
+    if (!board) {
+      return res.status(404).json({ message: "Board not found" });
+    }
+
+    if (String(board.owner) !== userId) {
+      return res.status(403).json({ message: "Forbidden" });
+    }
+
+    await boardModel.findByIdAndDelete(boardId);
+    await listModel.deleteMany({ board: boardId });
+    await taskModel.deleteMany({ board: boardId });
+
+    return res.status(200).json({ message: "Board deleted successfully" });
   } catch (error) {
     return res.status(500).json({ message: "Server down" });
   }

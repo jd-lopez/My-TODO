@@ -19,6 +19,12 @@ exports.createList = async (req, res) => {
       .sort({ order: -1 });
     const nextOrder = lastList ? lastList.order + 1 : 0;
 
+
+    const board = await boardModel.findOne({_id: boardId, $or: [{ owner: userId }, { "members.user": userId }] });
+    if (!board) {
+      return res.status(404).json({ message: "Board not found or access denied" });
+    }
+
     const newList = new listModel({
       user: userId,
       title,

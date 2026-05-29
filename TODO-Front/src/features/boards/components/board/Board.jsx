@@ -7,7 +7,7 @@ import List from "./List";
 import { AnimatePresence, motion } from "motion/react";
 import MembersModal from "../modals/MembersModal";
 import { useTheme } from "../../../../context/ThemeContext";
-
+import NotFound from "./NotFound";
 function Board() {
   const [board, setBoard] = useState();
   const [tasks, setTasks] = useState([]);
@@ -74,7 +74,7 @@ function Board() {
       const newList = res.data;
       setLists((prev) => [...prev, newList]);
     } catch (err) {
-      throw new Error("This is the error", err.message);
+      console.error("This is the error: ", err);
     }
   }
 
@@ -164,6 +164,14 @@ function Board() {
     }
   }
 
+  if (!board) {
+    return (
+      <>
+        <NotFound />
+      </>
+    );
+  }
+
   return (
     <div
       className="relative h-screen bg-cover bg-center"
@@ -181,7 +189,7 @@ function Board() {
 
         <div
           id="board-canvas"
-          className="flex items-start gap-3 p-4 overflow-x-auto h-108"
+          className="flex items-start gap-3 p-4 overflow-x-auto  min-h-[80vh]"
         >
           {lists.map((list) => {
             return (
