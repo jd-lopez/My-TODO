@@ -8,6 +8,7 @@ const taskController = require("./controller/taskController");
 const authController = require("./controller/authController");
 const boardController = require("./controller/boardController");
 const listController = require("./controller/listController");
+const activityController = require("./controller/activityController");
 const authMiddleware = require("./middleware/auth");
 
 const requiredEnvVars = ["MONGO_URL", "JWT_SECRET", "CLIENT_URL"];
@@ -77,6 +78,8 @@ app.use(
 app.use(express.json({ limit: "10kb" }));
 
 app.get("/boards", authMiddleware, boardController.getAllBoards);
+app.get("/boards/shared", authMiddleware, boardController.getSharedBoards);
+
 app.post("/boards", authMiddleware, boardController.createBoard);
 app.post(
   "/boards/:boardId/members",
@@ -98,6 +101,12 @@ app.get(
   "/boards/:boardId/lists/:listId/tasks",
   authMiddleware,
   taskController.getAllTasks,
+);
+
+app.get(
+  "/boards/:boardId/lists/:listId/tasks/:taskId/activity",
+  authMiddleware,
+  activityController.getActivityLogs,
 );
 
 app.delete("/boards/:boardId", authMiddleware, boardController.deleteBoard);

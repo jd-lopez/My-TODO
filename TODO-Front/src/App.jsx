@@ -41,7 +41,8 @@ function App() {
           }
         >
           <Route index element={<Home />} />
-          <Route path="boards/:boardId" element={<Board />} />
+          <Route path="boards/myboards/:boardId" element={<Board />} />
+          <Route path="boards/shared/:boardId" element={<Board />} />
         </Route>
 
         <Route path="*" element={<Navigate to="/" replace />} />

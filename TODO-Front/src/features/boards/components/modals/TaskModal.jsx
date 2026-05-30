@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useTheme } from "../../../../context/ThemeContext";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faXmark, faCircleCheck } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "motion/react";
+import api from "../../../../services/api";
 
 function TaskModal({
   onClose,
@@ -15,10 +16,28 @@ function TaskModal({
   const { isDark } = useTheme();
   const [description, setDescription] = useState(task.description);
 
+  const [activityLogs, setActivityLogs] = useState([]);
+
   function onSubmit(e) {
     e.preventDefault();
     onAddDescription(description, list._id, task._id);
   }
+
+  useEffect(() => {
+    if (!board?._id || !list?._id || !task?._id) {
+      return;
+    }
+
+    api
+      .get(`/boards/${board._id}/lists/${list._id}/tasks/${task._id}/activity`)
+      .then((res) => {
+        setActivityLogs(res.data);
+      })
+      .catch((err) => {
+        console.error("Failed to load activity logs:", err);
+        setActivityLogs([]);
+      });
+  }, [board?._id, list?._id, task?._id]);
 
   return (
     <motion.div
@@ -89,7 +108,7 @@ function TaskModal({
             </form>
           </div>
 
-          <div className=" flex-1">
+          <div className=" flex-1 flex justify-between flex-col">
             <div className="flex flex-col">
               <h1>Members</h1>
               <div className="flex items-center mt-2">
@@ -113,6 +132,28 @@ function TaskModal({
 
                 <button>add </button>
               </div>
+            </div>
+
+            <div className="flex flex-col mt-4 overflow-y-auto max-h-34 border border-gray-300 p-1 rounded-md">
+              <h1 className="mb-2">Activity logs</h1>
+              {activityLogs.length === 0 ? (
+                <p className="text-sm text-gray-400">No activity yet</p>
+              ) : (
+                <ul className="flex flex-col gap-2">
+                  {activityLogs.map((log) => (
+                    <li key={log._id} className="text-xs">
+                      <span className="font-semibold mr-3">
+                        {new Date(log.createdAt).toLocaleString()}:
+                      </span>
+                      {log.user?.name?.first ||
+                        log.user?.email ||
+                        "Unknown user"}
+                      {log.user?.name?.last ? ` ${log.user.name.last}` : ""}:{" "}
+                      {log.description || log.actionType || "Activity"}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </div>
           </div>
         </div>

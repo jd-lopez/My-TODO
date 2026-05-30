@@ -19,10 +19,14 @@ exports.createList = async (req, res) => {
       .sort({ order: -1 });
     const nextOrder = lastList ? lastList.order + 1 : 0;
 
-
-    const board = await boardModel.findOne({_id: boardId, $or: [{ owner: userId }, { "members.user": userId }] });
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
     if (!board) {
-      return res.status(404).json({ message: "Board not found or access denied" });
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
     }
 
     const newList = new listModel({
@@ -48,7 +52,20 @@ exports.getAllList = async (req, res) => {
       return res.status(401).json({ message: "unauthorized" });
     }
 
-    const lists = await listModel.find({ user: userId, board: boardId });
+    // Verify the user has access to this board (owner or member)
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
+    // Return ALL lists for this board (not filtered by user)
+    const lists = await listModel.find({ board: boardId });
 
     return res.status(200).json(lists);
   } catch (error) {
@@ -65,8 +82,20 @@ exports.deleteList = async (req, res) => {
       return res.status(401).json({ message: "unauthorized" });
     }
 
+    // Verify the user has access to this board (owner or member)
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
+    // Delete the list (not filtered by user - any board member can delete)
     const deletedList = await listModel.findOneAndDelete({
-      user: userId,
       board: boardId,
       _id: listId,
     });
@@ -75,8 +104,8 @@ exports.deleteList = async (req, res) => {
       return res.status(404).json({ message: "list not found" });
     }
 
+    // Delete all tasks in this list (not filtered by user)
     const deletedTasks = await taskModel.deleteMany({
-      user: userId,
       board: boardId,
       list: listId,
     });

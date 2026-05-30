@@ -39,7 +39,27 @@ exports.getAllBoards = async (req, res) => {
     }
 
     const boards = await boardModel.find({
-      $or: [{ owner: userId }, { "members.user": userId }],
+      owner: userId,
+    });
+
+    return res.status(200).json(boards);
+  } catch (err) {
+    return res.status(500).json({ message: "Server down" });
+  }
+};
+
+//get shared boards
+
+exports.getSharedBoards = async (req, res) => {
+  try {
+    const userId = getUserId(req);
+
+    if (!userId) {
+      return res.status(401).json({ message: "Unauthorized" });
+    }
+
+    const boards = await boardModel.find({
+      members: { $elemMatch: { user: userId, role: "member" } },
     });
 
     return res.status(200).json(boards);

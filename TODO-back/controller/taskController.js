@@ -1,4 +1,6 @@
 const taskModel = require("../model/taskModel");
+const boardModel = require("../model/boardModel");
+const activityModel = require("../model/activityModel");
 const getUserId = require("../utils/getUser");
 // function getUserId(req) {
 //   // Keep compatibility with the older request field names used earlier in the project.
@@ -19,8 +21,21 @@ exports.createTask = async (req, res) => {
       return res.status(400).json({ message: "Task title is required" });
     }
 
+    // Verify the user has access to this board (owner or member)
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
+    // Find the last task for this list (regardless of creator)
     const lastTask = await taskModel
-      .findOne({ user: userId, board: boardId, list: listId })
+      .findOne({ board: boardId, list: listId })
       .sort({ order: -1 });
     const nextOrder = lastTask ? lastTask.order + 1 : 0;
 
@@ -32,6 +47,15 @@ exports.createTask = async (req, res) => {
       order: nextOrder,
     });
     const saved = await newTask.save();
+
+    await activityModel.create({
+      user: userId,
+      board: boardId,
+      list: listId,
+      task: saved._id,
+      actionType: "created",
+      description: `Created task "${title}"`,
+    });
 
     return res.status(201).json(saved);
   } catch (error) {
@@ -48,8 +72,21 @@ exports.getAllTasks = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Verify the user has access to this board (owner or member)
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
+    // Return ALL tasks for this list (not filtered by user)
     const tasks = await taskModel
-      .find({ user: userId, board: boardId, list: listId })
+      .find({ board: boardId, list: listId })
       .sort({ order: 1 });
     return res.status(200).json(tasks);
   } catch (error) {
@@ -66,11 +103,23 @@ exports.deleteTask = async (req, res) => {
       return res.status(401).json({ message: "Unauthorized" });
     }
 
+    // Verify the user has access to this board (owner or member)
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
+    // Delete the task (not filtered by user - any board member can delete)
     const deleted = await taskModel.findOneAndDelete({
       board: boardId,
       _id: taskId,
       list: listId,
-      user: userId,
     });
 
     console.log(deleted);
@@ -121,17 +170,42 @@ exports.updateTask = async (req, res) => {
     if (!userId) {
       return res.status(401).json({ message: "Unauthorized" });
     }
-    const updates = {};
-    if (typeof completed === "boolean") updates.completed = completed;
-    if (typeof description === "string") updates.description = description;
-    if (typeof title === "string") updates.title = title;
 
+    // Verify the user has access to this board (owner or member)
+    const board = await boardModel.findOne({
+      _id: boardId,
+      $or: [{ owner: userId }, { "members.user": userId }],
+    });
+
+    if (!board) {
+      return res
+        .status(404)
+        .json({ message: "Board not found or access denied" });
+    }
+
+    const updates = {};
+    const updateDescriptions = [];
+    if (typeof completed === "boolean") {
+      updates.completed = completed;
+      updateDescriptions.push(
+        `marked task ${completed ? "complete" : "incomplete"}`,
+      );
+    }
+    if (typeof description === "string") {
+      updates.description = description;
+      updateDescriptions.push("updated the description");
+    }
+    if (typeof title === "string") {
+      updates.title = title;
+      updateDescriptions.push("updated the title");
+    }
+
+    // Update the task (not filtered by user - any board member can update)
     const updatedTask = await taskModel.findOneAndUpdate(
       {
         board: boardId,
         list: listId,
         _id: taskId,
-        user: userId,
       },
       {
         $set: updates,
@@ -141,6 +215,17 @@ exports.updateTask = async (req, res) => {
 
     if (!updatedTask) {
       return res.status(404).json({ message: "Task not found" });
+    }
+
+    if (updateDescriptions.length > 0) {
+      await activityModel.create({
+        user: userId,
+        board: boardId,
+        list: listId,
+        task: taskId,
+        actionType: "updated",
+        description: `Updated task "${updatedTask.title}" (${updateDescriptions.join(", ")})`,
+      });
     }
 
     return res.status(200).json(updatedTask);
