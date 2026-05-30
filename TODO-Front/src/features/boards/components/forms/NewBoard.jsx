@@ -22,7 +22,7 @@ export default function NewBoard({ onClose }) {
       });
       const newBoard = res.data;
       onClose?.();
-      navigate(`/app/boards/${newBoard._id}`);
+      navigate(`/app/boards/myboards/${newBoard._id}`);
       console.log("Board created:", newBoard);
     } catch (err) {
       throw new Error("Error creating board: " + err.message);
