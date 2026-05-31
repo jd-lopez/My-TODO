@@ -2,6 +2,7 @@ import "./App.css";
 import { Routes, Route, BrowserRouter, Navigate } from "react-router-dom";
 import Layout from "./layouts/Layout";
 import Home from "./features/boards/pages/Home";
+import HowItWorks from "./features/boards/pages/HowItWorks";
 import Login from "./pages/login/Login";
 import SignUp from "./pages/signup/SingUp";
 import Landing from "./pages/landing/Landing";
@@ -41,6 +42,7 @@ function App() {
           }
         >
           <Route index element={<Home />} />
+          <Route path="how-it-works" element={<HowItWorks />} />
           <Route path="boards/myboards/:boardId" element={<Board />} />
           <Route path="boards/shared/:boardId" element={<Board />} />
         </Route>

@@ -4,6 +4,7 @@ import {
   faHome,
   faSignOut,
   faUserGroup,
+  faQuestionCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../context/ThemeContext";
 import { useAuth } from "../../context/AuthContext";
@@ -76,6 +77,24 @@ function Sidebar({ isOpen, toggleSidebar }) {
                   <FontAwesomeIcon icon={faUserGroup} />
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/app/how-it-works"
+                  onClick={toggleSidebar}
+                  className={({ isActive }) =>
+                    `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
+                      isActive
+                        ? "bg-white text-black"
+                        : isDark
+                          ? "hover:bg-slate-800"
+                          : "hover:bg-gray-100"
+                    }`
+                  }
+                >
+                  <span>How it works</span>
+                  <FontAwesomeIcon icon={faQuestionCircle} />
+                </NavLink>
+              </li>
               <button
                 onClick={() => {
                   handleLogout();
@@ -145,6 +164,25 @@ function Sidebar({ isOpen, toggleSidebar }) {
             >
               {isOpen && <span className="whitespace-nowrap">Members</span>}
               <FontAwesomeIcon icon={faUserGroup} />
+            </NavLink>
+          </li>
+          <li>
+            <NavLink
+              to="/app/how-it-works"
+              className={({ isActive }) =>
+                `flex items-center justify-between gap-2 rounded-md px-3 py-2 ${
+                  isActive
+                    ? "bg-blue-500 text-white"
+                    : isDark
+                      ? "hover:bg-slate-800"
+                      : "hover:bg-gray-100"
+                }`
+              }
+            >
+              {isOpen && (
+                <span className="whitespace-nowrap">How it works</span>
+              )}
+              <FontAwesomeIcon icon={faQuestionCircle} />
             </NavLink>
           </li>
         </ul>

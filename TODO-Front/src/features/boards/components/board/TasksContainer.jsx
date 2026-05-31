@@ -101,26 +101,28 @@ function TasksContainer({
                       {task.title ?? task.text}
                     </h1>
                   )}
-                  <div className="flex justify-end items-center gap-2  w-14 ">
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        onDeleteTask(board._id, list._id, task._id);
-                      }}
-                    >
-                      <FontAwesomeIcon icon={faXmark} />
-                    </button>
-                    <button
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setEditingTaskId(task._id);
-                        setEditingTitle(task.title ?? task.text ?? "");
-                      }}
-                      className={`${task.completed ? "hidden" : "block"}`}
-                    >
-                      <FontAwesomeIcon icon={faPencil} />
-                    </button>
-                  </div>
+                  {!isEditing && (
+                    <div className="flex justify-end items-center gap-2  w-14 ">
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onDeleteTask(board._id, list._id, task._id);
+                        }}
+                      >
+                        <FontAwesomeIcon icon={faXmark} />
+                      </button>
+                      <button
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          setEditingTaskId(task._id);
+                          setEditingTitle(task.title ?? task.text ?? "");
+                        }}
+                        className={`${task.completed ? "hidden" : "block"}`}
+                      >
+                        <FontAwesomeIcon icon={faPencil} />
+                      </button>
+                    </div>
+                  )}
                 </motion.div>
               );
             })}
