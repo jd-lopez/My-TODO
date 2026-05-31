@@ -17,7 +17,7 @@ export default function SharedBoards({ boards }) {
         Boards shared with me
       </h1>
 
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-4 xl:grid-cols-4 p-4">
+      <div className="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-6 ">
         {boards.length > 0 && (
           <>
             {boards.map((board) => {

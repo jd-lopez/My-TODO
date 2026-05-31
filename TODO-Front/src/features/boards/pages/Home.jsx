@@ -41,12 +41,12 @@ export default function Home() {
 
   return (
     <section
-      className={`h-full min-h-0 flex flex-col ${
+      className={`h-full min-h-0 flex flex-col  ${
         isDark ? "bg-gray-800 text-white" : "bg-slate-200 text-slate-900"
       }`}
     >
       <div
-        className={`m-4 flex  min-h-0 flex-1 flex-col px-4 py-4 rounded-md ${isDark ? "bg-gray-700" : "bg-white"}`}
+        className={`m-4 flex min-h-0: flex-1 flex-col px-4 py-4 rounded-md  overflow-y-auto ${isDark ? "bg-gray-700" : "bg-white"}`}
       >
         <div className="flex-1">
           <h1 className="text-2xl w-fit mb-4 font-bold bg-linear-to-r from-blue-800 to-cyan-300  bg-clip-text text-transparent">
@@ -54,28 +54,29 @@ export default function Home() {
           </h1>
 
           {/*Board list container */}
-          <div className="flex items-center flex-1 min-h-0 overflow-y-auto pr-1">
-            <div
-              className={`flex size-28 flex-col items-center justify-center gap-2 rounded-2xl shadow-xl cursor-pointer ${isDark ? "border-blue-600 border bg-slate-500" : "border-gray-300 border"}`}
-              onClick={() => setShowModal((prev) => !prev)}
-            >
-              <button
-                className={`rounded-full p-1 grid items-center border border-black ${isDark ? "border-blue-600 hover:bg-slate-800 " : "border-gray-300 hover:bg-gray-100 w"}`}
+          <div className="flex flex-col items-center flex-1 min-h-0  pr-1 md:flex-row">
+            <div className="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-6 pb-8 ">
+              <div
+                className={`flex flex-col items-center justify-center gap-2 rounded-2xl  cursor-pointer ${isDark ? "border-blue-600 border bg-slate-500" : "border-gray-300 border lightShadow"}`}
+                onClick={() => setShowModal((prev) => !prev)}
               >
-                <FontAwesomeIcon
-                  icon={faPlus}
-                  className={` ${isDark ? "text-blue-600" : "text-black"}`}
-                />
-              </button>
-              <p className="text-sm text-center">Create a new board</p>
-            </div>
-            <div className="grid grid-cols-1 gap-4 md:grid-cols-4 xl:grid-cols-4 p-4">
+                <button
+                  className={`rounded-full p-1 grid items-center border border-black ${isDark ? "border-blue-600 hover:bg-slate-800 " : "border-gray-300 hover:bg-gray-100 w"}`}
+                >
+                  <FontAwesomeIcon
+                    icon={faPlus}
+                    className={` ${isDark ? "text-blue-600" : "text-black"}`}
+                  />
+                </button>
+                <p className="text-sm text-center">Create a new board</p>
+              </div>
+
               {boards.length > 0 && (
                 <>
                   {boards.map((board) => {
                     return (
                       <motion.div
-                        className={`relative flex flex-col rounded-2xl shadow-xl justify-between h-46 ${isDark ? "bg-gray-500 text-white" : ""}`}
+                        className={`relative flex flex-col rounded-2xl shadow-xl justify-between h-40  ${isDark ? "bg-gray-500 text-white" : "lightShadow"}`}
                         key={board._id}
                         onClick={() => {
                           navigate(`/app/boards/myboards/${board._id}`);
