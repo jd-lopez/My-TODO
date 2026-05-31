@@ -3,6 +3,8 @@ const listModel = require("../model/listModel");
 const getUserId = require("../utils/getUser");
 const taskModel = require("../model/taskModel");
 
+// List controller functions manage list creation, retrieval, and deletion.
+
 exports.createList = async (req, res) => {
   try {
     const userId = getUserId(req);
@@ -43,6 +45,7 @@ exports.createList = async (req, res) => {
   }
 };
 
+// Return all lists for a board if the user is the owner or a member.
 exports.getAllList = async (req, res) => {
   try {
     const userId = getUserId(req);
@@ -73,6 +76,7 @@ exports.getAllList = async (req, res) => {
   }
 };
 
+// Delete a list and all tasks inside it for an accessible board.
 exports.deleteList = async (req, res) => {
   try {
     const { boardId, listId } = req.params;
@@ -94,7 +98,7 @@ exports.deleteList = async (req, res) => {
         .json({ message: "Board not found or access denied" });
     }
 
-    // Delete the list (not filtered by user - any board member can delete)
+    // Delete the list. Any board member can remove it, not just the creator.
     const deletedList = await listModel.findOneAndDelete({
       board: boardId,
       _id: listId,
@@ -104,7 +108,7 @@ exports.deleteList = async (req, res) => {
       return res.status(404).json({ message: "list not found" });
     }
 
-    // Delete all tasks in this list (not filtered by user)
+    // Delete all tasks in this list so orphan tasks do not remain.
     const deletedTasks = await taskModel.deleteMany({
       board: boardId,
       list: listId,

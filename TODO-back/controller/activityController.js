@@ -4,6 +4,8 @@ const listModel = require("../model/listModel");
 const taskModel = require("../model/taskModel");
 const getUserId = require("../utils/getUser");
 
+// Activity controller returns audit entries for a single task.
+
 exports.getActivityLogs = async (req, res) => {
   try {
     const userId = getUserId(req);

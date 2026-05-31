@@ -1,6 +1,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 
+// Authenticate requests by verifying the Bearer JWT token.
 module.exports = async function authMiddleware(req, res, next) {
   const header = req.headers.authorization;
 

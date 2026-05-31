@@ -6,12 +6,19 @@ import api from "../../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
 import SharedBoards from "./SharedBoards";
+import DeleteAndLeaveBoardModal from "./DeleteAndLeaveModal";
 
 export default function Home() {
   const { isDark } = useTheme();
   const [boards, setBoards] = useState([]);
   const [sharedBoards, setSharedBoards] = useState([]);
   const { showModal, setShowModal } = useOutletContext();
+
+  const [deleteModal, setDeleteModal] = useState(false);
+  const [selectedBoard, setSelectedBoard] = useState(null);
+  const [deletingBoardId, setDeletingBoardId] = useState(null);
+
+  const currentBoard = boards.find((board) => board._id === selectedBoard);
 
   const navigate = useNavigate();
 
@@ -36,6 +43,17 @@ export default function Home() {
       );
     } catch (err) {
       console.error("Error deleting board:", err);
+    }
+  };
+
+  const handleLeave = async (boardId) => {
+    try {
+      await api.post(`/boards/${boardId}/leave`);
+      setSharedBoards((prevBoards) =>
+        prevBoards.filter((board) => board._id !== boardId),
+      );
+    } catch (err) {
+      console.error("Error leaving board:", err);
     }
   };
 
@@ -105,8 +123,8 @@ export default function Home() {
                           className="absolute top-2 right-2 bg-white rounded-full grid place-content-center p-2"
                           onClick={(e) => {
                             e.stopPropagation();
-
-                            handleDelete(board._id);
+                            setSelectedBoard(board._id);
+                            setDeleteModal(true);
                           }}
                         >
                           <FontAwesomeIcon
@@ -114,6 +132,23 @@ export default function Home() {
                             className={`text-red-600 focus:animate-bounce`}
                           />
                         </button>
+                        {deleteModal && board._id === selectedBoard && (
+                          <DeleteAndLeaveBoardModal
+                            board={currentBoard}
+                            onConfirm={(e) => {
+                              e.stopPropagation();
+                              handleDelete(currentBoard._id);
+                              setDeleteModal(false);
+                              setSelectedBoard(null);
+                            }}
+                            onCancel={(e) => {
+                              e.stopPropagation();
+                              setDeleteModal(false);
+                              setSelectedBoard(null);
+                            }}
+                            words={["delete", "keep"]}
+                          />
+                        )}
                       </motion.div>
                     );
                   })}
@@ -124,7 +159,7 @@ export default function Home() {
         </div>
 
         <div className="flex-1 mt-4">
-          <SharedBoards boards={sharedBoards} />
+          <SharedBoards boards={sharedBoards} handleLeave={handleLeave} />
         </div>
       </div>
     </section>

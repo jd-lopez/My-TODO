@@ -2,11 +2,10 @@ const taskModel = require("../model/taskModel");
 const boardModel = require("../model/boardModel");
 const activityModel = require("../model/activityModel");
 const getUserId = require("../utils/getUser");
-// function getUserId(req) {
-//   // Keep compatibility with the older request field names used earlier in the project.
-//   return req.user?.id || req.userId?.id || req.userID?.id;
-// }
+// Task controller handles task creation, retrieval, update, and deletion.
+// Activity log entries are created when tasks are created or updated.
 
+// Create a new task in a board list and log the creation event.
 exports.createTask = async (req, res) => {
   try {
     const { title } = req.body;
@@ -34,6 +33,7 @@ exports.createTask = async (req, res) => {
     }
 
     // Find the last task for this list (regardless of creator)
+    // Determine the next display order within the list.
     const lastTask = await taskModel
       .findOne({ board: boardId, list: listId })
       .sort({ order: -1 });
@@ -63,6 +63,7 @@ exports.createTask = async (req, res) => {
   }
 };
 
+// Get all tasks for a specific list; used by the board UI to load list contents.
 exports.getAllTasks = async (req, res) => {
   try {
     const userId = getUserId(req);
@@ -94,6 +95,7 @@ exports.getAllTasks = async (req, res) => {
   }
 };
 
+// Delete a specific task if the authenticated user has board access.
 exports.deleteTask = async (req, res) => {
   try {
     const { boardId, listId, taskId } = req.params;
@@ -161,6 +163,7 @@ exports.deleteTask = async (req, res) => {
 //   }
 // };
 
+// Update task fields and record an activity entry for the update.
 exports.updateTask = async (req, res) => {
   try {
     const userId = getUserId(req);
@@ -218,6 +221,7 @@ exports.updateTask = async (req, res) => {
     }
 
     if (updateDescriptions.length > 0) {
+      // Record precisely what changed about the task.
       await activityModel.create({
         user: userId,
         board: boardId,

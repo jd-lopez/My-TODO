@@ -5,11 +5,18 @@ import { useTheme } from "../../../context/ThemeContext";
 import { motion } from "motion/react";
 import api from "../../../services/api";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPlus, faTrashCan } from "@fortawesome/free-solid-svg-icons";
+import {
+  faPlus,
+  faTrashCan,
+  faDoorOpen,
+} from "@fortawesome/free-solid-svg-icons";
+import DeleteAndLeaveBoardModal from "./DeleteAndLeaveModal";
 
-export default function SharedBoards({ boards }) {
+export default function SharedBoards({ boards, handleLeave }) {
   const navigate = useNavigate();
   const { isDark } = useTheme();
+  const [leaveModal, setLeaveModal] = useState(false);
+  const [selectedLeaveBoard, setSelectedLeaveBoard] = useState(null);
 
   return (
     <div>
@@ -18,12 +25,11 @@ export default function SharedBoards({ boards }) {
       </h1>
 
       <div className="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-6 ">
-        {boards.length > 0 && (
+        {boards.length > 0 ? (
           <>
             {boards.map((board) => {
               return (
                 <motion.div
-                  to="/app/boards/:boardId"
                   className={`relative flex flex-col rounded-2xl shadow-xl justify-between h-46 ${isDark ? "bg-gray-500 text-white" : ""}`}
                   key={board._id}
                   onClick={() => {
@@ -54,18 +60,41 @@ export default function SharedBoards({ boards }) {
                     onClick={(e) => {
                       e.stopPropagation();
 
-                      handleDelete(board._id);
+                      setSelectedLeaveBoard(board._id);
+                      setLeaveModal(true);
                     }}
                   >
                     <FontAwesomeIcon
-                      icon={faTrashCan}
+                      icon={faDoorOpen}
                       className={`text-red-600 focus:animate-bounce`}
                     />
                   </button>
+
+                  {leaveModal && selectedLeaveBoard === board._id && (
+                    <DeleteAndLeaveBoardModal
+                      board={board}
+                      onConfirm={(e) => {
+                        e.stopPropagation();
+                        handleLeave(board._id);
+                        setLeaveModal(false);
+                        setSelectedLeaveBoard(null);
+                      }}
+                      onCancel={(e) => {
+                        e.stopPropagation();
+                        setLeaveModal(false);
+                        setSelectedLeaveBoard(null);
+                      }}
+                      words={["leave", "stay"]}
+                    />
+                  )}
                 </motion.div>
               );
             })}
           </>
+        ) : (
+          <div>
+            <p className="text-gray-500">No boards shared with you.</p>
+          </div>
         )}
       </div>
     </div>

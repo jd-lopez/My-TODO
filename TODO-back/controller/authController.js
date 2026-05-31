@@ -2,11 +2,13 @@ const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const User = require("../model/userModel");
 
+// Sign a JWT with the authenticated user's ID.
 function signToken(userID) {
   // Keep token payload and expiration consistent between register and login.
   return jwt.sign({ userID }, process.env.JWT_SECRET, { expiresIn: "7d" });
 }
 
+// Normalize first/last name input values before saving to the database.
 function normalizeNameInput({ first, last }) {
   return {
     first: typeof first === "string" ? first.trim() : "",
@@ -14,6 +16,7 @@ function normalizeNameInput({ first, last }) {
   };
 }
 
+// Register a new user, validate input, hash password, and return a JWT.
 exports.register = async (req, res) => {
   try {
     const { first, last, email, password } = req.body;
@@ -81,6 +84,7 @@ exports.register = async (req, res) => {
   }
 };
 
+// Authenticate an existing user and return a JWT on success.
 exports.login = async (req, res) => {
   try {
     const { email, password } = req.body;

@@ -11,6 +11,7 @@ const listController = require("./controller/listController");
 const activityController = require("./controller/activityController");
 const authMiddleware = require("./middleware/auth");
 
+// Required environment variables used for database connection, JWT signing, and CORS configuration.
 const requiredEnvVars = ["MONGO_URL", "JWT_SECRET", "CLIENT_URL"];
 const missingEnvVars = requiredEnvVars.filter((key) => !process.env[key]);
 
@@ -22,6 +23,7 @@ if (missingEnvVars.length > 0) {
 
 const app = express();
 
+// Apply security headers to make the API safer for browser clients.
 app.use(helmet());
 app.use(
   helmet.contentSecurityPolicy({
@@ -57,6 +59,7 @@ const localOrigins =
     : [];
 const allowedOrigins = new Set([...configuredOrigins, ...localOrigins]);
 
+// CORS configuration to allow authorized client origins.
 app.use(
   cors({
     origin(origin, callback) {
@@ -70,63 +73,91 @@ app.use(
     credentials: true,
   }),
 );
+
+// Parse URL-encoded data from HTML forms.
 app.use(
   express.urlencoded({
     extended: false,
   }),
 );
+
+// Parse JSON bodies for API requests.
 app.use(express.json({ limit: "10kb" }));
 
+// Get all boards created by the authenticated user.
 app.get("/boards", authMiddleware, boardController.getAllBoards);
+
+// Get all boards shared with the authenticated user.
 app.get("/boards/shared", authMiddleware, boardController.getSharedBoards);
 
+// Create a new board owned by the authenticated user.
 app.post("/boards", authMiddleware, boardController.createBoard);
+
+// Share a board with another user by email.
 app.post(
   "/boards/:boardId/members",
   authMiddleware,
   boardController.shareBoard,
 );
+
+// Leave a shared board as the authenticated user.
+app.post("/boards/:boardId/leave", authMiddleware, boardController.leaveBoard);
+
+// Get a single board if the authenticated user is owner or member.
 app.get("/boards/:boardId", authMiddleware, boardController.getBoard);
 
+// Create a new list inside a board.
 app.post("/boards/:boardId/lists", authMiddleware, listController.createList);
 
+// Get all lists for a board.
 app.get("/boards/:boardId/lists", authMiddleware, listController.getAllList);
+
+// Create a task in a specific list.
 app.post(
   "/boards/:boardId/lists/:listId/tasks",
   authMiddleware,
   taskController.createTask,
 );
 
+// Get all tasks for a specific list.
 app.get(
   "/boards/:boardId/lists/:listId/tasks",
   authMiddleware,
   taskController.getAllTasks,
 );
 
+// Get activity logs for a specific task.
 app.get(
   "/boards/:boardId/lists/:listId/tasks/:taskId/activity",
   authMiddleware,
   activityController.getActivityLogs,
 );
 
+// Delete a board owned by the authenticated user.
 app.delete("/boards/:boardId", authMiddleware, boardController.deleteBoard);
+
+// Delete a task from a list.
 app.delete(
   "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
   taskController.deleteTask,
 );
+
+// Delete a list from a board.
 app.delete(
   "/boards/:boardId/lists/:listId",
   authMiddleware,
   listController.deleteList,
 );
 
+// Update a task's title, description, or completion state.
 app.patch(
   "/boards/:boardId/lists/:listId/tasks/:taskId",
   authMiddleware,
   taskController.updateTask,
 );
 
+// Authentication routes for login and registration.
 app.post("/login", authLimiter, authController.login);
 app.post("/register", authLimiter, authController.register);
 
@@ -136,7 +167,7 @@ mongoose
   .connect(process.env.MONGO_URL)
   .then(() => {
     console.log("Database connected");
-    // The API only starts after MongoDB connects, so requests never hit a half-started server.
+    // Start the HTTP server only after MongoDB is available.
     app.listen(PORT, () => console.log(`API running on ${PORT}`));
   })
   .catch((err) => {
