@@ -75,7 +75,7 @@ export default function Home() {
           <div className="flex flex-col items-center flex-1 min-h-0  pr-1 md:flex-row">
             <div className="grid grid-cols-2 gap-6 md:grid-cols-4 xl:grid-cols-6 pb-8 ">
               <div
-                className={`flex flex-col items-center justify-center gap-2 rounded-2xl  cursor-pointer ${isDark ? "border-blue-600 border bg-slate-500" : "border-gray-300 border lightShadow"}`}
+                className={`hidden md:flex flex-col h-40 max-h-40 items-center justify-center gap-2 rounded-2xl  cursor-pointer  ${isDark ? "border-blue-600 border bg-slate-500" : "border-gray-300 border lightShadow"}`}
                 onClick={() => setShowModal((prev) => !prev)}
               >
                 <button

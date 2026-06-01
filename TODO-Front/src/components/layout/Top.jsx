@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBars, faXmark } from "@fortawesome/free-solid-svg-icons";
 import { useTheme } from "../../context/ThemeContext";
@@ -13,6 +13,8 @@ function Top({ onToggleSidebar, isSidebarOpen, showModal, setShowModal }) {
   const { user, isAuthenticated } = useAuth();
   const initials =
     `${user?.name?.first?.[0] || ""}${user?.name?.last?.[0] || ""}`.toUpperCase();
+
+  const location = useLocation();
 
   return (
     <header
@@ -40,19 +42,33 @@ function Top({ onToggleSidebar, isSidebarOpen, showModal, setShowModal }) {
           TODO
         </NavLink>
       </div>
-      <div className="flex items-center gap-2 md:gap-3 text-sm md:text-lg">
-        <button
-          className={`bg-blue-500  hover:bg-blue-700 transition-all ease-in text-white rounded-md px-2 py-1 font-bold cursor-pointer `}
-          onClick={() => {
-            if (showModal) {
-              return;
-            }
+      <div className="flex  items-center gap-2 md:gap-3 text-sm md:text-lg">
+        <>
+          {location.pathname === "/app" && (
+            <button
+              className={`bg-blue-500 hover:bg-blue-700 transition-all ease-in text-white rounded-md px-2 py-1 font-bold cursor-pointer absolute bottom-10 left-3/5 z-50 md:static md:hidden shadow-lg shadow-blue-500/30 active:scale-90 text-sm`}
+              onClick={() => {
+                if (showModal) {
+                  return;
+                }
 
-            setShowModal((prev) => !prev);
-          }}
-        >
-          Create
-        </button>
+                setShowModal((prev) => !prev);
+              }}
+            >
+              New Board
+            </button>
+          )}
+
+          <button
+            className={`hidden md:inline-flex bg-blue-500 hover:bg-blue-700 transition-all ease-in text-white rounded-md px-2 py-1 font-bold cursor-pointer static shadow-md shadow-blue-500/20 active:scale-90 text-sm`}
+            onClick={() => {
+              if (showModal) return;
+              setShowModal((prev) => !prev);
+            }}
+          >
+            New Board
+          </button>
+        </>
 
         {isAuthenticated ? (
           <button

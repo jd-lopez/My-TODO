@@ -18,6 +18,7 @@ function TasksContainer({
   onDeleteTask,
   onComplete,
   onAddDescription,
+  descriptionError,
   onUpdateTitle,
 }) {
   const { isDark } = useTheme();
@@ -152,6 +153,7 @@ function TasksContainer({
               board={board}
               onComplete={onComplete}
               onAddDescription={onAddDescription}
+              descriptionError={descriptionError}
             />
           </>
         )}

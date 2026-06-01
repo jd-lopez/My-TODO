@@ -15,6 +15,8 @@ function Board() {
   const [tasks, setTasks] = useState([]);
   const [lists, setLists] = useState([]);
   const [shareModal, setShareModal] = useState(false);
+
+  const [descriptionError, setDescriptionError] = useState("");
   const { boardId } = useParams();
 
   const { isDark } = useTheme();
@@ -97,6 +99,17 @@ function Board() {
   }
 
   async function addDescription(description, listId, taskId) {
+    if (description === "") {
+      setDescriptionError("Description cannot be empty");
+      return;
+    }
+
+    const existing = tasks.find((t) => t._id === taskId);
+    if (existing && (existing.description || "") === description) {
+      setDescriptionError("No changes to save");
+      return;
+    }
+
     try {
       const res = await api.patch(
         `/boards/${boardId}/lists/${listId}/tasks/${taskId}`,
@@ -109,6 +122,7 @@ function Board() {
       setTasks((prev) =>
         prev.map((task) => (task._id === taskId ? updatedTask : task)),
       );
+      setDescriptionError("");
     } catch (err) {
       console.error("This is the error: ", err);
     }
@@ -213,6 +227,7 @@ function Board() {
                 onComplete={markComplete}
                 onDeleteList={deleteList}
                 onAddDescription={addDescription}
+                descriptionError={descriptionError}
                 onUpdateTitle={updateTitle}
               />
             );

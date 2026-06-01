@@ -197,6 +197,8 @@ exports.updateTask = async (req, res) => {
     if (typeof description === "string") {
       updates.description = description;
       updateDescriptions.push("updated the description");
+    } else if (description === "") {
+      return res.status(400).json({ message: "Description cannot be empty" });
     }
     if (typeof title === "string") {
       updates.title = title;

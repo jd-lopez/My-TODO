@@ -63,7 +63,7 @@ export default function HowItWorks() {
   ];
 
   return (
-    <section className="p-6">
+    <section className="p-6 overflow-y-auto h-full">
       <div className="max-w-5xl mx-auto">
         <h1
           className={`text-3xl font-bold mb-6 ${isDark ? "text-white" : "text-black"}`}

@@ -12,6 +12,7 @@ function TaskModal({
   board,
   onComplete,
   onAddDescription,
+  descriptionError,
 }) {
   const { isDark } = useTheme();
   const [description, setDescription] = useState(task.description);
@@ -92,7 +93,7 @@ function TaskModal({
                   Description
                 </label>
                 <textarea
-                  className={`p-2 rounded-md resize-none mx-6 ${isDark ? "bg-slate-600 text-white" : "bg-gray-200"}`}
+                  className={`p-2 rounded-md resize-none mx-6 ${isDark ? "bg-slate-600 text-white" : "bg-gray-200 border border-gray-300"}`}
                   name="description"
                   id="description"
                   cols="2"
@@ -101,6 +102,12 @@ function TaskModal({
                   value={description}
                   onChange={(e) => setDescription(e.target.value)}
                 ></textarea>
+
+                <span>
+                  {descriptionError && (
+                    <p className="text-red-500">{descriptionError}</p>
+                  )}
+                </span>
               </div>
               <div className="flex-2 flex gap-2 ml-6 w-fit rounded-md bg-blue-600 px-2 py-0.5 text-white">
                 <button type="submit">Save</button>

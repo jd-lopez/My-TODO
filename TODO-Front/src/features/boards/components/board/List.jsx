@@ -16,6 +16,7 @@ function List({
   onComplete,
   onDeleteList,
   onAddDescription,
+  descriptionError,
   onUpdateTitle,
 }) {
   const { isDark } = useTheme();
@@ -25,7 +26,7 @@ function List({
   return (
     <AnimatePresence>
       <motion.div
-        className={` min-h-0 flex flex-col gap-1 rounded-md p-2 min-w-68 w-72 ${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} `}
+        className={` min-h-0 flex text-sm flex-col gap-1 rounded-md p-2 min-w-68 w-72 ${isDark ? "bg-slate-900 text-white" : "bg-gray-50 text-black"} `}
         initial={{ opacity: 0, scale: 0 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0 }}
@@ -89,6 +90,7 @@ function List({
           onDeleteTask={onDeleteTask}
           onComplete={onComplete}
           onAddDescription={onAddDescription}
+          descriptionError={descriptionError}
           onUpdateTitle={onUpdateTitle}
         />
 
